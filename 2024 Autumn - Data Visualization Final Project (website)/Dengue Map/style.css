@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&display=swap');
+
+body {
+    font-family: "Jaldi", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    margin: 0;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+#load {
+    background-color: rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#load div {
+    overflow: hidden;
+    background-color: rgb(146, 146, 146);
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 20px;
+    margin-top: 20%;
+    border-radius: 10px;
+    width: 160px;
+    height: 40px;
+
+    font-size: 30px;
+    text-align: center;
+    line-height: 40px;
+}
+
+#map {
+    float: left;
+    height: 550px;
+    width: 450px;
+    z-index: 0;
+}
+
+#interface {
+    margin: 0 auto;
+    width: 80%;
+    text-align: center;
+}
+
+#interface h1 {
+    margin: 25px auto;
+    width: 40%;
+    background-color: rgb(173, 146, 146);
+    border-radius: 5px;
+}
+
+.spawn {
+    z-index: 10;
+    transition: opacity 0.5s;
+}
+
+#control {
+    text-align: left;
+    margin-left: 500px;
+    font-size: 20px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 22px;
+    color: rgb(89, 119, 188);
+}
+
+#time-settings {
+    margin-bottom: 20px;
+}
+
+#time-settings span {
+    margin: 0;
+}
+
+#data-settings p{
+    margin: 0;
+    font-weight: 700;
+}
+
+#sex {
+    height: 150px;
+    float: left;
+}
+
+#age {
+    height: 150px;
+    margin-left: 100px;
+    padding-left: 20px;
+    border-left: 1px solid black;
+}
+
+.age-cell {
+    display: block;
+    float: left;
+    width: 80px;
+}
+
+#full-time {
+    height: 80px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#scaled-time {
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+}
+
+.horizon {
+    position: relative;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: rgb(77, 82, 89);
+    
+    text-align: center;
+}
+
+.horizon canvas {
+    margin: 0 auto;
+}
+
+#brush {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    background-color: rgba(255, 251, 175, 0.168);
+    border: 2px solid rgba(251, 255, 0, 0.211);
+
+    cursor: pointer;
+}
+
+#brush-left, #brush-right, #pointer, #pointer-line {
+    position: absolute;
+    width: 10px;
+    height: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+
+    border-radius: 3px;
+
+    background-color: white;
+
+    cursor: ew-resize;
+}
+
+#full-axis {
+    position: absolute;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-top: 2px solid rgb(164, 164, 164);
+}
+
+#scaled-time svg {
+    position: relative;
+    margin: 0 auto;
+}
+
+#pointer {
+    opacity: 0;
+    z-index: 5;
+    height: 45px;
+    background-color: rgb(98, 98, 98);
+    transition: opacity 0.1s;
+}
+
+#pointer-line {
+    height: 80px;
+    width: 1px;
+    background-color: black
+}
+
+#display-date {
+    float: right;
+    margin-right: 20px;
+    text-align: right;
+}

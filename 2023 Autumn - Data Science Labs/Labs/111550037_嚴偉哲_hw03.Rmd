@@ -1,0 +1,163 @@
+---
+title: "Introduction to Data Science HW3"
+output: html_document
+date: "2023-10-09"
+author: "111550037_嚴偉哲"
+---
+
+#Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+#Read and store the data
+
+```{r}
+table <- read.csv("spotify-2023-uncleaned.csv", sep = ',')
+```
+
+1| Missing Values
+We first check if an attribute has missing data:
+(I used "" character to check since there's no NA values in the dataset)
+
+```{r}
+for (x in attributes(table)$names) {
+  sum = 0
+  for (y in table[x]) {
+    #print(length(y))
+    for (k in y) {
+      if (k == "") {
+        sum = sum + 1
+      }
+    }
+  }
+  print(paste("The attribute", x, "has", sum, "missing values."))
+}
+```
+As we can see, the attribute 'in_shazam_charts' and 'key' has missings values.
+
+#Fixing
+The 'in_shazam_charts' means the presence or rank of the song, which probably indicates that, if the value is empty, it's not in Shazam's dataset. The replacement I chose is by adding "0" into them, as "0" means it's not been ranked.
+
+```{r}
+table$in_shazam_charts[table$in_shazam_charts == ""] <- "0"
+```
+
+The missing 'key' means the song is in C major or minor. We can confirm this by checking the key attributes of all songs:
+
+```{r}
+sort(unique(table$key))
+```
+So, we can simply replace the empty value with "C"
+
+```{r}
+table$key[table$key == ""] = "C"
+```
+
+The result:
+
+```{r}
+#The number of empty values
+length(table$in_shazam_charts[table$in_shazam_charts == ""])
+#The number of values equal 0
+length(table$in_shazam_charts[table$in_shazam_charts == "0"])
+```
+```{r}
+#The number of empty values
+length(table$key[table$key == ""])
+#The number of values equal C
+length(table$key[table$key == "C"])
+```
+2| Corrupted Values
+It's hard to disign an algorithm to find the corrupted values in the dataset. However, I did find one of them in the 'streams' attribute:
+
+```{r}
+table$streams[575]
+```
+This slot should be a numeric value, but the creator might have mistyped it.
+
+#Fixing
+The corrupted value can be fixed by the mean of other songs that has the same attributes which affect the preference of the audience the most. I choose valence and energy to continue.
+
+```{r}
+#remove the corrupted data
+table$streams[575] <- 0
+#get the attrbutes of the corrupted song
+valence = table$valence_.[575]
+energy = table$energy_.[575]
+#display the attributes
+cat("The valence% of this song is", valence, "\n")
+cat("The energy% of this song is", energy, "\n")
+#find all the song which has valence% & energy% within 3%
+val_list <- table$valence_.
+enr_list <- table$energy_.
+str_list <- table$streams
+n = 0
+str = 0
+cat("\n//Songs that matches the condition:\n")
+for (x in 1:length(val_list)) {
+  if (abs(val_list[x] - valence) < 3 && abs(enr_list[x] - energy) < 3) {
+    if(x != 575){
+      print(table$track_name[x])
+      str = str + as.numeric(str_list[x])
+      n = n + 1
+    }
+  }
+}
+cat("//\n")
+#replace
+table$streams[575] <- round(str / n)
+cat("The replaced value is", str / n)
+```
+3| Outlier
+For this, I mainly focus on the values of streams. If a song is on this list, its stream count should not be too low.
+
+```{r}
+streams <- as.numeric(table$streams)
+dotchart(log10(streams), main = "Dot Plot of Stream Counts (Log)")
+sort(streams)
+```
+#Fixing
+As the chart shows above, there are 2 outliers that are too small. Therefore, we need to replace them.
+```{r}
+#find the index of the outliers in the data frame
+streams <- sort(streams)
+outlier = match(c(streams[1], streams[2]), table$streams)
+for (x in outlier) {
+  cat("For the song", table$track_name[x], ":\n")
+  #clear the outlier
+  table$streams[x] <- 0
+  #get the attrbutes of the corrupted song
+  valence = table$valence_.[x]
+  energy = table$energy_.[x]
+  #display the attributes
+  cat("The valence% of this song is", valence, "\n")
+  cat("The energy% of this song is", energy, "\n")
+  #find all the song which has valence% & energy% within 3%
+  val_list = table$valence_.
+  enr_list = table$energy_.
+  str_list = table$streams
+  n = 0
+  str = 0
+  cat("\n//Songs that matches the condition:\n")
+  for (y in 1:length(val_list)) {
+    if (abs(val_list[y] - valence) < 3 && abs(enr_list[y] - energy) < 3) {
+      if(y != x){
+        print(table$track_name[y])
+        str = str + as.numeric(str_list[y])
+        n = n + 1
+      }
+    }
+  }
+  cat("//\n")
+  #replace
+  table$streams[x] <- round(str / n)
+  cat("The replaced value is", str / n, "\n\n")
+}
+
+```
+```{r}
+write.csv(table, "spotify-2023-cleaned.csv", row.names = FALSE)
+```

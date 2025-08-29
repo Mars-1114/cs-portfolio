@@ -1,0 +1,43 @@
+{
+    "Items": [
+        {
+            "Lane": 0,
+            "Beat": -2,
+            "Position": [0, -8],
+            "PosEase": "hold"
+        },
+        {
+            "Lane": 0,
+            "Beat": 40
+        },
+        {
+            "Lane": 1,
+            "Beat": 0,
+            "Position": [8, -4],
+            "PosEase": "hold",
+            "Speed": 10
+        },
+        {
+            "Lane": 1,
+            "Beat": 1.5,
+            "Position": [8, 0],
+            "PosEase": "hold"
+        },
+        {
+            "Lane": 1,
+            "Beat": 3,
+            "Position": [8, 4],
+            "PosEase": "hold"
+        },
+        {
+            "Lane": 1,
+            "Beat": 4,
+            "Position": [8, -4],
+            "PosEase": "hold"
+        },
+        {
+            "Lane": 1,
+            "Beat": 40
+        }
+    ]
+}

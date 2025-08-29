@@ -1,0 +1,190 @@
+---
+title: "Introduction to Data Science HW6"
+author: "111550037_嚴偉哲"
+date: "2023-10-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+#Read and store the data
+
+```{r}
+table <- read.csv("spotify-2023-cleaned.csv", sep = ',')
+```
+
+#Main
+This homework will be focused on finding the regression curve of the data set I used.
+
+1| Startup
+
+  In the previous homework, I found that the stream count has little to none correlation to the attributes the music has. I suspect that it's because my data set is time-sensitive. That is, the views would get higher as the time goes, and this definitely affects the result I expected. So, to make the further studies, I need to find a model to remove the time factor first.
+  The easiest way to get a view-time graph is to simply grab statistics history of the music/MV. Unfortunately, such data set does not exist, and YouTube removed that feature years ago. So instead, I will take some old graphs as a reference, and design a growth curve by myself.
+ The graph I use is shown in this video - https://www.youtube.com/watch?v=Vux1Ztp88Fk .(Image below)
+ 
+```{r}
+knitr::include_graphics('view-time.png')
+```
+  We can observe that most of the videos have a rapid increase of views initially, then gradually flat down after 2-6 months. With this, I designed the following curve:
+
+```{r}
+# function
+adj = function(input) {
+  return (1 + 0.2 * log2(5 * input + 0.0625) + input ^ 0.25)
+}
+x <- seq(0, 20, 0.1)
+y <- adj(x)
+plot(x, y, type = "l", lwd = 3, col = "green", main = "1+0.2(lg(5x+0.0625))+x^0.25", ylab = "Stream Count (relative)", xlab = "Month Since Released")
+```
+The next step is to write the function for adjusting the stream count based on the date it released. I will adjust them to 6 months after its release date.
+
+```{r}
+adjStream <- function(song) {
+  # get week difference
+  ## This dataset is published on 26 August, 2023
+  endDate <- as.Date("26/08/2023", "%d/%m/%Y")
+  startDate <- as.Date(paste(song[[6]], "/", song[[5]], "/", song[[4]], sep = ""), "%d/%m/%Y")
+  ## we treat a month has 4 weeks
+  diff <- as.numeric(difftime(endDate, startDate, units = "weeks"))
+  # adjust stream count
+  rawStr <- as.numeric(song[[9]])
+  adjStr <- rawStr * (adj(6) / adj(diff))
+  return (round(adjStr))
+}
+```
+
+Next, we change the stream count to the fixed one:
+
+```{r}
+for (i in 1:length(table$streams)) {
+  table$streams[i] <- adjStream(table[i,])
+}
+hist(table$streams, breaks = length(table$streams) / 10, main = "Histogram of Adjusted Stream Counts")
+#table$streams[4]
+```
+  We observe the scatter plot matrix between stream counts and other attributes. (I only picked the top 100 songs to show the significance)
+
+```{r}
+compare <- table[c(9, 18:24)]
+# No logarithm needed,as the time factor is fixed
+#compare[1] <- log10(compare[1])
+# Select the top 100 songs
+compare <- compare[order(compare$streams, decreasing = TRUE), ]
+compare100 <- compare[1:100, ]
+pairs(compare100, lower.panel = NULL, pch = 18, col = "darkgrey")
+```
+Since I find energy, acousticness, and liveness have more of a correlation, I will pick these to study the regression models.
+
+2| Parametric Regression
+
+#Simple Linear Regression
+
+```{r}
+model = lm(compare100$streams ~ compare100$energy_.)
+summary(model)
+plot(compare100$energy_., compare100$streams)
+abline(model, col = "red")
+```
+```{r}
+model = lm(compare100$streams ~ compare100$acousticness_.)
+summary(model)
+plot(compare100$acousticness_., compare100$streams)
+abline(model, col = "red")
+```
+```{r}
+model = lm(compare100$streams ~ compare100$liveness_.)
+summary(model)
+plot(compare100$liveness_., compare100$streams)
+abline(model, col = "red")
+```
+#Second Degree Polynomial Regression
+
+```{r}
+library(ggplot2)
+model2nd <- lm(streams ~ poly(energy_., 2, raw = TRUE), data = compare100)
+model2nd
+ggplot(compare100, aes(energy_., streams)) + geom_point() + stat_smooth(method = lm, formula = y ~ poly(x, 2, raw = TRUE))
+```
+```{r}
+model2nd <- lm(streams ~ poly(acousticness_., 2, raw = TRUE), data = compare100)
+model2nd
+ggplot(compare100, aes(acousticness_., streams)) + geom_point() + stat_smooth(method = lm, formula = y ~ poly(x, 2, raw = TRUE))
+```
+```{r}
+model2nd <- lm(streams ~ poly(liveness_., 2, raw = TRUE), data = compare100)
+model2nd
+ggplot(compare100, aes(liveness_., streams)) + geom_point() + stat_smooth(method = lm, formula = y ~ poly(x, 2, raw = TRUE))
+```
+# Logarithmic Regression
+
+## Linear-Log Model
+
+```{r}
+modellog <- lm(streams ~ log(energy_.), data = compare100)
+modellog
+summary(modellog)
+ggplot(compare100, aes(energy_., streams)) + geom_point() + stat_smooth(method = lm, formula = y ~ log(x))
+```
+```{r}
+## Some of the acousticness attributes have the value of 0, therefore the log regression is not doable. 
+#modellog <- lm(streams ~ log(compare100$acousticness_.), data = compare100)
+#modellog
+#summary(modellog)
+#ggplot(compare100, aes(acousticness_., streams)) + geom_point() + stat_smooth(method = lm, formula = y ~ log(x))
+```
+
+```{r}
+modellog <- lm(streams ~ log(liveness_.), data = compare100)
+modellog
+summary(modellog)
+ggplot(compare100, aes(liveness_., streams)) + geom_point() + stat_smooth(method = lm, formula = y ~ log(x))
+```
+
+3| Non-Parametric Regression
+
+#Locally Weighted Regression
+
+```{r}
+modelloess <- loess(streams ~ energy_., data = compare100)
+modelloess
+series <- seq(0, 100, by = 1)
+prediction <- predict(modelloess, data.frame(energy_. = series))
+plot(compare100$energy_., compare100$streams, xlab = "energy%", ylab = "stream count")
+lines(series, prediction, col = "red", lwd = 2)
+```
+```{r}
+modelloess <- loess(streams ~ acousticness_., data = compare100)
+modelloess
+series <- seq(0, 100, by = 1)
+prediction <- predict(modelloess, data.frame(acousticness_. = series))
+plot(compare100$acousticness_., compare100$streams, xlab = "acousticness%", ylab = "stream count")
+lines(series, prediction, col = "red", lwd = 2)
+```
+```{r}
+modelloess <- loess(streams ~ liveness_., data = compare100)
+modelloess
+series <- seq(0, 100, by = 1)
+prediction <- predict(modelloess, data.frame(liveness_. = series))
+plot(compare100$liveness_., compare100$streams, xlab = "liveness%", ylab = "stream count")
+lines(series, prediction, col = "red", lwd = 2)
+```
+#Kernal Regression
+
+```{r}
+modelKernal <- ksmooth(compare100$energy_., compare100$streams, "normal", 1)
+plot(compare100$energy_., compare100$streams, xlab = "energy%", ylab = "stream count")
+lines(modelKernal$x, modelKernal$y, type = "l", col = "red", lwd = 2)
+```
+```{r}
+modelKernal <- ksmooth(compare100$acousticness_., compare100$streams, "normal", 1)
+plot(compare100$acousticness_., compare100$streams, xlab = "acousticness%", ylab = "stream count")
+lines(modelKernal$x, modelKernal$y, type = "l", col = "red", lwd = 2)
+```
+```{r}
+modelKernal <- ksmooth(compare100$liveness_., compare100$streams, "normal", 1)
+plot(compare100$liveness_., compare100$streams, xlab = "liveness%", ylab = "stream count")
+lines(modelKernal$x, modelKernal$y, type = "l", col = "red", lwd = 2)
+```

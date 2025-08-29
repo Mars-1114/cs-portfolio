@@ -1,0 +1,102 @@
+{
+  "Name": "Fly Again",
+  "Artist": "Fujiyori ",
+  "Difficulty": 0.0,
+  "Offset": 800.0,
+  "BPMControl": [
+    {
+      "Beat": 0.0,
+      "BPM": 105.0,
+      "Easing": "hold"
+    }
+  ],
+  "Lanes": [
+    {
+      "ID": 0,
+      "Notes": [
+        {
+          "Beat": 1.0,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 3.0,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 5.0,
+          "Type": "tap",
+          "Duration": 1.0
+        }
+      ],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.5,
+            "Position": {
+              "X": 5.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 1.0,
+            "Position": {
+              "X": 5.0,
+              "Y": -4.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 1.5,
+            "Position": {
+              "X": 5.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 2.25,
+            "Position": {
+              "X": 5.0,
+              "Y": -3.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 4.0,
+            "Position": {
+              "X": 5.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": -5.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    }
+  ]
+}

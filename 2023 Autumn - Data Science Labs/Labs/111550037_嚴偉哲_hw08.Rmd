@@ -1,0 +1,150 @@
+---
+title: "Introduction to Data Science HW8"
+author: "111550037_嚴偉哲"
+date: "2023-11-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+In this homework, I want to study the U.S President victory speech since 2000 using the text mining technique. This data set includes 6 speeches, with 3 Republican and 3 Democratic ones each.
+
+1| Preprocessing
+
+We first store the data and install required packages:
+
+```{r}
+# packages
+#install.packages(c("tm", "SnowballCC", "RcolorBrewer", "wordcloud", "biclust", "cluster", "igraph", "fpc"), dependencies = TRUE)
+#install.packages("Rcampdf", repos = "http://datacude.wu.ac.at/", type = "source")
+# data set
+library(tm)
+folder <- file.path("C:/Users/ASUS/Desktop/大學/數據科學概論/US President Victory Speech 2000-2020")
+docs <- VCorpus(DirSource(folder))
+summary(docs)
+```
+Now, we clean up the data.
+
+```{r}
+for (i in 1:length(docs)) {
+  # remove symbols
+  docs[[i]] <- gsub("/", " ", docs[[i]])
+  docs[[i]] <- gsub("@", " ", docs[[i]])
+  docs[[i]] <- gsub("…", " ", docs[[i]])
+  docs[[i]] <- gsub("—", " ", docs[[i]])
+  docs[[i]] <- gsub('"', " ", docs[[i]])
+  # de-contraction
+  docs[[i]] <- gsub("’s", " ", docs[[i]])
+  docs[[i]] <- gsub("’m", " am", docs[[i]])
+  docs[[i]] <- gsub("’ve", " have", docs[[i]])
+  docs[[i]] <- gsub("’re", " are", docs[[i]])
+  docs[[i]] <- gsub("’ll", " will", docs[[i]])
+}
+docs <- tm_map(docs, removePunctuation) # remove punctuation
+docs <- tm_map(docs, removeNumbers) # remove numbers
+docs <- tm_map(docs, tolower) # convert to lower case
+docs <- tm_map(docs, removeWords, stopwords("english")) # remove stop words
+docs <- tm_map(docs, removeWords, c("syllogism", "tautology")) # remove stop words
+docs <- tm_map(docs, PlainTextDocument)
+docs <- tm_map(docs, stemDocument)
+docs <- tm_map(docs, stripWhitespace) # trim whitespace
+docs <- tm_map(docs, PlainTextDocument)
+as.character(docs[[1]]) # final result
+```
+2| Exploration
+
+We first create a document term matrix and a term document matrix
+
+```{r}
+dtm <- DocumentTermMatrix(docs)
+tdm <- TermDocumentMatrix(docs)
+dtm
+cat("\n")
+tdm
+```
+
+```{r}
+freq <- colSums(as.matrix(dtm))
+as.matrix(dtm)
+cat("\n")
+head(freq, 20)
+```
+Next, we remove words that does not appear too often.
+
+```{r}
+dtm_desparse <- removeSparseTerms(dtm, 0.2)
+dtm_desparse
+```
+Below shows the most frequent 20 words:
+
+```{r}
+freq <- sort(freq, decreasing = TRUE)
+table <- data.frame(word = names(freq), freq = freq)
+head(table, 20)
+```
+And the bar plot of words that appear more than 20 times.
+
+```{r}
+library(ggplot2)
+plot_freq <- ggplot(subset(table, freq > 20), aes(x = reorder(word, -freq), y = freq)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "word", y = "frequency")
+plot_freq
+```
+Below is another visual representation of the word frequencies.
+
+```{r}
+library(wordcloud)
+wordcloud(names(freq), freq, min.freq = 15, scale = c(5, .1), colors = brewer.pal(6, "Dark2"))
+```
+from the result, we can see that in the victory speech, the presidents will most likely state what they plan to do in their term (from "will"), and will speak around the country (from "america"/"american"), and people (from "people"), which are all pretty general stuff. Therefore, I'm more interested in the difference between Republican and Democratic Party.
+
+3| Comparison
+
+We again create the dtm for the data set.
+
+```{r}
+docs_gop <- list(docs[[1]], docs[[2]], docs[[5]])
+docs_dem <- list(docs[[3]], docs[[4]], docs[[6]])
+dtm_gop <- DocumentTermMatrix(docs_gop)
+dtm_dem <- DocumentTermMatrix(docs_dem)
+dtm_gop
+cat("\n")
+dtm_dem
+```
+```{r}
+freq_gop <- colSums(as.matrix(dtm_gop))
+freq_dem <- colSums(as.matrix(dtm_dem))
+freq_gop <- sort(freq_gop, decreasing = TRUE)
+freq_dem <- sort(freq_dem, decreasing = TRUE)
+# remove non word (?
+freq_gop <- freq_gop[-1]
+freq_dem <- freq_dem[-1]
+freq_gop <- freq_gop[-10]
+freq_dem <- freq_dem[-17]
+#
+table_gop <- data.frame(word = names(freq_gop), freq = freq_gop)
+table_dem <- data.frame(word = names(freq_dem), freq = freq_dem)
+head(table_gop, 20)
+head(table_dem, 20)
+```
+```{r}
+plot_freq_gop <- ggplot(subset(table_gop, freq > 9), aes(x = reorder(word, -freq), y = freq)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "word", y = "frequency", title = "Word Use of Republican Presidents")
+plot_freq_dem <- ggplot(subset(table_dem, freq > 10), aes(x = reorder(word, -freq), y = freq)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "word", y = "frequency", title = "Word Use of Democratic Presidents")
+plot_freq_gop
+plot_freq_dem
+```
+```{r}
+wordcloud(names(freq_gop), freq_gop, min.freq = 9, scale = c(5, .1), colors = brewer.pal(6, "Dark2"))
+wordcloud(names(freq_dem), freq_dem, min.freq = 10, scale = c(5, .1), colors = brewer.pal(6, "Dark2"))
+```

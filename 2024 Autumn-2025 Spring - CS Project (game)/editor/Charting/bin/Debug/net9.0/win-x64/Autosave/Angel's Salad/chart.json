@@ -1,0 +1,230 @@
+{
+  "Name": "Angel's Salad",
+  "Artist": "kitagari",
+  "Difficulty": 0.0,
+  "Offset": 1200.0,
+  "BPMControl": [
+    {
+      "Beat": 0.0,
+      "BPM": 177.0,
+      "Easing": "hold"
+    }
+  ],
+  "Lanes": [
+    {
+      "ID": 0,
+      "Notes": [
+        {
+          "Beat": 1.0,
+          "Type": "track",
+          "Duration": 0.375
+        },
+        {
+          "Beat": 9.0,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 10.5,
+          "Type": "tap",
+          "Duration": 1.0
+        }
+      ],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 0.0,
+              "Y": -5.0
+            },
+            "Easing": "hold"
+          },
+          {
+            "Beat": 1.25,
+            "Position": {
+              "X": -1.0,
+              "Y": -5.0
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 1.375,
+            "Position": {
+              "X": 1.0,
+              "Y": -5.0
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 1.5,
+            "Position": {
+              "X": -1.0,
+              "Y": -4.5
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 1.625,
+            "Position": {
+              "X": 1.0,
+              "Y": -4.5
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 1.75,
+            "Position": {
+              "X": -1.0,
+              "Y": -4.0
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 1.875,
+            "Position": {
+              "X": 1.0,
+              "Y": -3.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 2.0,
+            "Position": {
+              "X": -1.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 2.125,
+            "Position": {
+              "X": 1.0,
+              "Y": 0.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 2.25,
+            "Position": {
+              "X": -1.0,
+              "Y": 2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 2.375,
+            "Position": {
+              "X": 1.0,
+              "Y": 4.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 1.0,
+              "Y": -5.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 1,
+      "Notes": [
+        {
+          "Beat": 9.75,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 11.0,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 11.75,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 12.5,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 13.25,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 14.0,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 14.75,
+          "Type": "tap",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 15.5,
+          "Type": "tap",
+          "Duration": 1.0
+        }
+      ],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 5.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 2.0,
+            "Position": {
+              "X": 4.0,
+              "Y": -5.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    }
+  ]
+}

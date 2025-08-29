@@ -1,0 +1,22 @@
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.AssemblyInfo.cs
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\BPM Detection.exe
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\BPM Detection.deps.json
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\BPM Detection.runtimeconfig.json
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\BPM Detection.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\BPM Detection.pdb
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\NAudio.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\NAudio.Asio.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\NAudio.Core.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\NAudio.Midi.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\NAudio.Wasapi.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\bin\Debug\net8.0\NAudio.WinMM.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Dete.E80392D4.Up2Date
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\refint\BPM Detection.dll
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.pdb
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\BPM Detection.genruntimeconfig.cache
+C:\Users\user\Desktop\大學\資訊工程專題\BPM Detection\BPM Detection\obj\Debug\net8.0\ref\BPM Detection.dll

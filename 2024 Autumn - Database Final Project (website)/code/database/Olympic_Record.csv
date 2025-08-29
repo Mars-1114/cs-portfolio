@@ -1,0 +1,55 @@
+﻿項目,result_id,athlete_id,country,name,grade,date,1/0
+Men's track and field 100 meters,56265,105512,JAM,Usain Bolt,9.63(s),2012,0
+Men's track and field 200 meters,63973,105512,JAM,Usain Bolt,19.3(s),2008,0
+Men's track and field 400 meters,56313,135688,RSA,Wayde van Niekerk,43.03(s),2016,0
+Men's track and field 800 meters,56338,123568,KEN,David Rudisha,101.91(s),2012,0
+Men's track and field 1500 meters,56349,145682,NOR,Jakob Ingebrigtsen,208.32(s),2021,0
+Men's Marathon,56369,115457,KEN,Sammy Wanjiru,7592(s),2008,0
+"Men's 3,000 metres Steeplechase",64082,134877,KEN,Conseslus Kipruto,483.28(s),2016,0
+Men's 400m hurdles,64755,135340,NOR,Karsten Warholm,45.94(s),2021,0
+Men's high jump,64109,78057,USA,Charles Austin,2.39(m),1996,1
+Men's pole vault,60678,132777,BRA,Thiago Braz,6.03(m),2016,1
+Men's long jump,56467,78091,USA,Bob Beamon,8.9(m),1968,1
+Men's triple jump,59030,78520,USA,Kenny Harrison,18.09(m),1996,1
+Men's shot put,64883,136264,USA,Ryan Crouser,23.3(m),2021,1
+Men's discus throw,64900,73209,LTU,Virgilijus Alekna,69.89(m),2004,1
+Men's hammer throw,64917,77543,URS,Sergey Litvinov,84.80(m),1988,1
+Men's javelin throw,64934,107086,NOR,Andreas Thorkildsen,90.57(s),2008,1
+Decathlon,64951,122729,CAN,Damian Warner,9018(score),2021,1
+Women's track and field 100 meters,65030,130722,JAM,Elaine Thompson-Herah,10.61(s),2021,0
+Women's track and field 200 meters,65048,77849,USA,Florence Griffith Joyner,21.34(s),1988,0
+Women's track and field 800 meters,65083,77266,URS,Nadezhda Olizarenko,113.43(s),1980,0
+Women's track and field 1500 meters,65094,127094,KEN,Faith Kipyegon,233.11(s),2021,0
+Women's marathon,65114,124039,ETH,Tiki Gelana,8587(s),2012,0
+"Women's 3,000 metres Steeplechase",19000767,104993,RUS,Gulnara Samitova-Galkina,538.81(s),2021,0
+Women's 400m hurdles,65132,132050,USA,Sydney McLaughlin,51.46(s),2021,0
+Women's high jump,65154,107104,RUS,Yelena Slesarenko,2.06(m),2004,1
+Women's pole vault,65838,88456,RUS,Yelena Isinbayeva,5.05(m),2008,1
+Women's long jump,65179,77882,USA,Jackie Joyner-Kersee,7.4(m),1988,1
+Women's triple jump,65196,132214,VEN,Yulimar Rojas,15.67(m),2021,1
+Women's shot put,59214,69728,GDR,Ilona Schoknecht-Slupianek,22.41(m),1980,1
+women's discus throw,65230,70001,GDR,Martina Hellmann,72.3(m),1988,1
+Women's hammer throw,65929,115098,POL,Anita WLodarczyk,82.29(m),2016,1
+women's javelin throw,65247,83475,CUB,Osleidys Menendez,71.53(m),2004,1
+Heptathlon,65264,77882,USA,Jackie Joyner-Kersee,7291(score),1988,1
+Women's weightlifting 49kg,263069,141794,CHN,Hou Zhihui,210(kg),2021,1
+Women's weightlifting 59kg,30386,122309,TPE,Kuo Hsing-Chun,236(kg),2021,1
+Women's weightlifting 81kg,263096,141795,CHN,Li Wenwen,320(kg),2021,1
+Men's weightlifting 102kg,263060,134095,GEO,Lasha Talakhadze,488(kg),2021,1
+Men's 10m Air Pistol Final,51835,143818,IRI,Javad Foroughi,244.8(score),2021,1
+Men's 50m rifle three position final,51832,2502763,CHN,Zhang Changhong,466(score),2021,1
+Men's 25m rapid fire pistol final,51828,93036,CUB,Leuris Pupo,34(score),2012,1
+Women's 50m freestyle,8160,129061,AUS,Emma McKeon,23.81(s),2021,0
+Women's 100m freestyle,8171,129061,AUS,Emma McKeon,51.96(s),2021,0
+Women's 200m freestyle,8181,140694,AUS,Mollie O'Callaghan,113.27(s),2024,0
+Women's 100m backstroke,8207,2504470,AUS,Kaylee McKeown,57.33(s),2024,0
+Women's 200m backstroke,8216,126679,USA,Missy Franklin,124.06(s),2012,0
+Women's 100m breaststroke,8225,146399,RSA,Tatjana Schoenmaker,64.82(s),2021,0
+Women's 200m breaststroke,8235,146399,RSA,Tatjana Schoenmaker,138.95(s),2021,0
+Women's 200m butterfly,8255,129678,CHN,Zhang Yufei,123.86(s),2021,0
+Men's 50m freestyle,7969,136353,USA,Caeleb Dressel,21.07(s),2021,0
+Men's 100m freestyle,4479,136353,USA,Caeleb Dressel,47.02(s),2021,0
+Men's 200m freestyle,7995,93860,USA,Michael Phelps,102.96(s),2008,0
+Men's 100m backstroke,8023,136367,USA,Ryan Murphy,51.85(s),2016,0
+Men's 200m backstroke,8034,135802,ROC,Yevgeny Rylov,113.27(s),2021,0
+Men's 100m breaststroke,8044,134063,GBR,Adam Peaty,57.13(s),2016,0

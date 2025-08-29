@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taiwan Map Marker</title>
+    <!-- 引入 Leaflet.js 的 JavaScript 和 CSS 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+        /* 設定地圖容器的高度和寬度 */
+        #map {
+            height: 90vh;
+            width: 100%;
+        }
+        /* 設定頁面整體樣式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        /* 設定輸入表單的樣式 */
+        #input-form {
+            padding: 10px;
+            background: #f4f4f4;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 經緯度輸入表單 -->
+    <div id="input-form">
+        <label for="latitude">Latitude: </label>
+        <!-- 經度輸入框 -->
+        <input type="number" id="latitude" step="any" placeholder="e.g., 25.033">
+        <label for="longitude">Longitude: </label>
+        <!-- 緯度輸入框 -->
+        <input type="number" id="longitude" step="any" placeholder="e.g., 121.565">
+        <!-- 標記按鈕 -->
+        <button onclick="addMarker()">Mark on Map</button>
+    </div>
+    <!-- 地圖顯示區域 -->
+    <div id="map"></div>
+
+    <script>
+        // 初始化地圖，預設以台灣為中心
+        const map = L.map('map').setView([23.7, 121.0], 7);
+        addMarker();
+
+        // 添加地圖的瓦片圖層（使用 OpenStreetMap 資料）
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18, // 設定最大縮放級別
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors' // 版權聲明
+        }).addTo(map);
+
+        // 定義函數以根據用戶輸入添加標記
+        function addMarker() {
+            // 在地圖上添加標記
+            L.circleMarker([25, 121], {
+                radius: 8,
+                stroke: 0,
+                fillColor: '#ff0000',
+                fillOpacity: 0.8,
+                className: 'new'
+            }).addTo(map);
+            $('.new').each(function() {
+                var pos = $(this).offset();
+                $(this).after("<span class='spawn' style='top=" + pos.top + "; left=" + pos.left + "'>hi</span>")
+            });
+        }
+    </script>
+</body>
+</html>

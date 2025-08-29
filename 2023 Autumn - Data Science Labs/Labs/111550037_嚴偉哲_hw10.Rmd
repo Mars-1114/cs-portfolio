@@ -1,0 +1,83 @@
+---
+title: "Introduction to Data Science hw10"
+author: "111550037_嚴偉哲"
+date: "2023-12-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+# Store the dataset
+
+```{r}
+data.train<-read.csv("digits.csv")
+head(data.train)
+data.test<-read.csv("digits_test.csv")
+head(data.test)
+```
+
+```{r}
+dim(data.train)
+dim(data.test)
+```
+
+```{r}
+#install.packages("neuralnet")
+library(neuralnet)
+library(nnet)
+zip.train_s <- data.train
+zip.test_s <- data.test
+scaled1 <- as.matrix(scale(data.train[,-1]))
+zip.train_s[,-1] <- as.matrix(scaled1)
+colnames(zip.train_s) <- paste("v", 1:ncol(zip.train_s), sep="")
+scaled2 <- scale(data.test[,-1], center=attr(scaled1,"scaled:center"), 
+ scale=attr(scaled1,"scaled:scale"))
+zip.test_s[,-1] <- as.matrix(scaled2)
+colnames(zip.test_s) <- paste("v", 1:ncol(zip.test_s), sep="")
+a <- class.ind(zip.train_s[,1])
+colnames(a) <- paste("a", colnames(a), sep="")
+yname<-colnames(a)
+xname<-colnames(zip.train_s)[-1]
+(fmla <- as.formula(paste(paste(yname, collapse="+"), " ~ ", paste(xname, collapse="+"))))
+```
+```{r}
+fitnn1 <- neuralnet(fmla, data=cbind(a, zip.train_s[,-1]), 
+ hidden=c(12),
+ err.fct="ce", act.fct="logistic",
+ linear.output=FALSE)
+fitnn2 <- neuralnet(fmla, data=cbind(a, zip.train_s[,-1]), 
+ hidden=c(64, 16),
+ err.fct="ce", act.fct="logistic",
+ linear.output=FALSE)
+fitnn3 <- neuralnet(fmla, data=cbind(a, zip.train_s[,-1]), 
+ hidden=c(64, 64, 16), 
+ err.fct="ce", act.fct="logistic",
+ linear.output=FALSE)
+fitnn4 <- neuralnet(fmla, data=cbind(a, zip.train_s[,-1]), 
+ hidden=c(64, 64, 16, 16),
+ err.fct="ce", act.fct="logistic",
+ linear.output=FALSE)
+plot(fitnn1, rep="best")
+```
+
+```{r}
+prediction <- function(fitnn)
+{ 
+ btest <- zip.test_s[,-1]
+ prednn <- compute(fitnn, btest)
+ resind <- apply(prednn$net.result, 1, which.max)
+ pred <- (0:9)[resind]
+ confusion <- table(pred, zip.test_s[,1])
+ cat("Confusion table")
+ print(confusion)
+ accuracy <- sum(diag(confusion))/length(pred)
+ cat("Accuracy = ", accuracy, "\n")
+}
+prediction(fitnn1)
+prediction(fitnn2)
+prediction(fitnn3)
+prediction(fitnn4)
+```

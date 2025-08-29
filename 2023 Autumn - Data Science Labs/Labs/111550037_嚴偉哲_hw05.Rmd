@@ -1,0 +1,112 @@
+---
+title: "111550037_嚴偉哲_hw05"
+author: "111550037_嚴偉哲"
+date: "2023-10-25"
+output: html_document
+---
+
+#Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+#Read and store the data
+
+```{r}
+table <- read.csv("spotify_top_charts_22.csv", sep = ',')
+```
+
+#Main
+  In this homework, I'm going to take a look at the "Spotify Top Chart Songs 2022" dataset with the exploratory data analysis.
+  I want to first observe, then compare, visualize, and clean/fill the data to get a sense on it.
+
+1| Overview
+  We begin by inspecting the summary of the data set.
+
+```{r}
+summary(table)
+```
+  Here we can see that there are 646 songs in this set, with 17 different attributes.
+
+2| Univariate Analysis
+  Here we see the properties of different attributes.
+
+#Key and Mode
+  The values in key represents C(0), C#(1), D(2), ..., B(10), B#(11) respectively.
+
+```{r}
+summary(factor(table$key))
+```
+  Here we can see that C# key is the most common one, and B key is the least.
+
+```{r}
+summary(factor(table$mode))
+```
+  The number 0 represents the minor keys, and 1 represents the major keys. The major keys is more preferred than the minor keys, with 373 songs using it.
+
+```{r}
+  summary(factor(paste(table$key, table$mode, sep = " ")))
+```
+  The table above is the numbers of key + mode. Here we can see the most common ones are C# Major(65), D Major(48), and C Major(47).
+  
+#tempo
+
+```{r}
+hist(table$tempo, breaks = length(table$tempo), main = "Histogram of Tempo")
+```
+As this graph shown, the most popular bpm is around 120. Also, notice that the spikes often show up when the tempo is the multiple of 10. This is probably for a clean number.
+
+#Duration
+
+```{r}
+hist(table$duration_ms / 1000, breaks = length(table$duration_ms))
+```
+  This shows most of the songs are around 200 seconds, or 3 minutes long.
+
+3| Multivariate Analysis
+  In this section, I want to see the relations of the attributes of the music itself.
+
+#Scatterplot Matrix
+
+```{r}
+library(ggplot2)
+library(GGally)
+pairs(table[c(6, 7, 9, 11:14)], upper.panel = NULL)
+ggpairs(table[c(6, 7, 9, 11:14)], axisLabels = "show")
+```
+  Here we can see that, the energy and loudness has the correlation coefficient of 0.694, which means that as a song gets more energetic, it becomes louder. Also, they both affect the acousticness, with the correlation coefficient of -0.593 and -0.439 respectively. This tells us that an energetic song might contains more effect sounds and beats, and less vocal and instruments.
+
+4| Missing Values
+  Unfortunately, this data set contains no missing values. Therefore, I will delete some at random, then fill it and compare with the original data.
+  Since the energy, loudness, and acousticness have the most significant relations, I will delete 10 of the acousticness values and replace them with an approximation.
+
+```{r}
+n <- sample(1:length(table$acousticness), 10, replace = FALSE)
+for (i in n) {
+  temp_acou <- table$acousticness[i]
+  energy = table$energy[i]
+  loud = table$loudness[i]
+  x <- 0.0
+  acou <- 0.0
+  table$acousticness[i] <- 0
+  cat("For the song", table$track_name[i], ":")
+  cat("\n//Songs that matches the condition:\n")
+  for (y in 1:length(table$acousticness)) {
+    if (abs(table$energy[y] - energy) < 0.08 && abs(table$loudness[y] - loud) < 0.08) {
+      if(y != i){
+        print(table$track_name[y])
+        acou = acou + as.double(table$acousticness[y])
+        x = x + 1
+      }
+    }
+  }
+  cat("//\n")
+  table$acousticness[i] = as.double(acou / x)
+  cat("The replaced value is", as.double(acou / x), "\n")
+  cat("The original value is", temp_acou, "\n\n")
+}
+```
+
+

@@ -1,0 +1,232 @@
+---
+title: "Introduction to Data Science HW7"
+author: "111550037_嚴偉哲"
+date: "2023-11-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+In this homework, I will focus on how to separate genre of songs by their attributes. The data set I used is called "Top Spotify songs from 2010-2019 - BY YEAR".
+
+1| Overview
+
+We begin by importing the data set.
+
+```{r}
+table <- read.csv("top10s.csv", sep = ',')
+```
+
+Check the summary of the data set:
+
+```{r}
+summary(table)
+```
+It contains 603 songs with their genre, artists, and 10 different attributes.
+We first find out the songs with missing data:
+
+```{r}
+for (i in 1:length(table)) {
+  cat("The attribute", attributes(table)$names[i], "has", sum(is.na(table[i])), "missing values\n")
+}
+```
+Nicely enough, this data set has none of them. Next, we check if there's any duplicates:
+  
+```{r}
+summary(unique(table$title))
+```
+It has 19 duplicate songs. So first, we need to remove them.
+
+```{r}
+temp_id <- c()
+temp_song <- c(table$title[1])
+for (i in 2:length(table$title)) {
+  if (table$title[i] %in% temp_song) {
+    temp_id <- append(temp_id, i)
+  }
+  else {
+    temp_song <- append(temp_song, table$title[i])
+  }
+}
+table <- table[-temp_id,]
+```
+
+There's also an outlier data
+
+```{r}
+table[table$X == 443,]
+```
+This is only one data lost, so removing it wouldn't affect much.
+
+```{r}
+table <- table[-match(443, table$X),]
+```
+
+Now, we check the genres listed in the table:
+
+```{r}
+table(table$top.genre)
+```
+  As it is shown above, dance pop is the most common one, with 323 songs using it. Therefore, in this homework, I'll try to use the attributes to differentiate a dance pop song and a non-dance pop song. For that, I change the genre to only 2 types.
+  
+```{r}
+for (i in 1:length(table$title)){
+  if (table$top.genre[i] != "dance pop") {
+    table$top.genre[i] <- "non-dance pop"
+  }
+}
+table(table$top.genre)
+```
+2| Linear Discriminant
+
+To build a classification model, we need a training set and a test set. Since there's no actual test set available in this data set, I'll sample around 20% of the songs to do that.
+
+```{r}
+sample <- sample(1:length(table$title), round(length(table$title) * 0.2), replace = FALSE)
+tableTest <- table[sample,]
+tableTrain <- table[-sample,]
+```
+
+Next, we use linear discriminant to classify the songs.
+
+```{r}
+library(MASS)
+lda <- lda(top.genre~bpm + nrgy + dnce + dB + live + val + dur + acous + spch + pop, prior=c(1, 1) / 2, data=tableTrain)
+lda
+```
+Next, we chock the accuracy of the model.
+
+```{r}
+ldaTest <- predict(lda, tableTest[,6:15])$class
+result <- table(ldaTest, tableTest[,4])
+acc <- (result[1] + result[4]) / sum(result)
+result
+cat("\nThe accuracy of this model is", acc)
+```
+The accuracy isn't great, so now we try to fix it. One approach is to not include the attributes that are irrelevant. I will achieve this by checking the spread of the values. If an attribute has a high variance value, it probably isn't that important for our classification model.
+
+```{r}
+table_dancepop <- table[c(table$top.genre == "dance pop"),]
+# For attributes using percentage, I will simply compute their variance
+varId <- c(7, 8, 10, 11, 13, 14, 15)
+for (i in varId) {
+  varTemp <- var(table_dancepop[i])
+  cat("The variance of the attribute", attributes(table_dancepop)$names[i], "is", varTemp, "\n")
+}
+# For other attributes, I will scale them to the same as the percentage first before computing
+varId <- c(6, 9, 12)
+for (i in varId) {
+  attrTemp <- table_dancepop[i] / (max(table_dancepop[i]) - min(table_dancepop[i])) * 100
+  varTemp <- var(attrTemp)
+  cat("The variance of the attribute", attributes(table_dancepop)$names[i], "is", varTemp, "\n")
+}
+```
+It seems like val and acous are the two most wide spread in terms of values, so we can try to ignore these two.
+
+```{r}
+lda_fix <- lda(top.genre~bpm + nrgy + dnce + dB + live + dur + spch + pop, prior=c(1, 1) / 2, data=tableTrain)
+lda_fix
+```
+And the confusion matrix of the model:
+
+```{r}
+ldaTest_fix <- predict(lda_fix, tableTest[, c(6:10, 12, 14, 15)])$class
+result_fix <- table(ldaTest_fix, tableTest[,4])
+acc_fix <- (result_fix[1] + result_fix[4]) / sum(result_fix)
+result_fix
+cat("\nThe accuracy of this model is", acc_fix)
+```
+This does little improvement to our accuracy, so I instead try to observe the density graph of the two types of songs.
+
+```{r}
+library(ggplot2)
+plotvec <- list()
+for (i in 6:15) {
+  plotTemp <- ggplot(data.frame(table[,i]), aes(x = table[,i], fill = table$top.genre)) +
+    geom_density(alpha = 0.6) +
+    scale_fill_manual(values = c("dance pop" = "red", "non-dance-pop" = "blue")) +
+    theme_minimal() +
+    labs(
+      title = "",
+      x = attributes(table)$names[i],
+      y = "density"
+    )
+  print(plotTemp)
+}
+```
+Here I want to eliminate the ones that overlap the most. That will be spch, dur, and nrgy.
+
+```{r}
+lda_fix2 <- lda(top.genre~bpm + dnce + dB + live + val + acous + pop, prior=c(1, 1) / 2, data=tableTrain)
+lda_fix2
+```
+And the confusion matrix is:
+
+```{r}
+ldaTest_fix2 <- predict(lda_fix2, tableTest[, c(6, 8:11, 13, 15)])$class
+result_fix2 <- table(ldaTest_fix2, tableTest[,4])
+acc_fix2 <- (result_fix2[1] + result_fix2[4]) / sum(result_fix2)
+result_fix2
+cat("\nThe accuracy of this model is", acc_fix2)
+```
+After a few runs, I found that this model has the highest accuracy among the three most of the time, so I will pick this as my LDA model.
+
+#visualize
+
+```{r}
+pre <- data.frame(predict(lda_fix2)$x)
+pre$class <- predict(lda_fix2)$class
+lda2 <- lda(class~LD1, data = pre)
+ld1lim <- range(c(min(pre$LD1), max(pre$LD1)), mul = 0.05)
+ld1 <- seq(ld1lim[[1]], ld1lim[[2]], length.out = 300)
+newdat <- expand.grid(list(LD1 = ld1))
+preds <- predict(lda2, newdata = newdat)
+predclass <- preds$class
+postprob <- preds$posterior
+df <- data.frame(x = newdat$LD1, class = predclass)
+df$classnum <- as.numeric(df$class)
+df <- cbind(df, postprob)
+ggplot(pre, aes(x = LD1, y = 0, colour = class)) +
+  geom_point() +
+  geom_raster(data = df, aes(x = x, y = 0, fill = factor(class)), alpha = 0.4, show_guide = FALSE)
+```
+3| Quadratic Discriminant
+
+We again build another model for the data set.
+
+```{r}
+qda <- qda(top.genre~bpm + nrgy + dnce + dB + live + val + dur + acous + spch + pop, prior=c(1, 1) / 2, data=tableTrain)
+qda
+```
+The confusion matrix for this model is:
+
+```{r}
+qdaTest <- predict(qda, tableTest[,6:15])$class
+qda_result <- table(qdaTest, tableTest[, 4])
+qda_acc <- (qda_result[1] + qda_result[4]) / sum(qda_result)
+qda_result
+cat("\nThe accuracy of this model is", qda_acc)
+```
+This is already better than the LDA model, but I still want to see if excluding unnecessary attributes can improve it more.
+
+```{r}
+qda_fix <- qda(top.genre~bpm + dnce + dB + live + val + acous + pop, prior=c(1, 1) / 2, data=tableTrain)
+qda_fix
+```
+And the accuracy is:
+
+```{r}
+qdaTest_fix <- predict(qda_fix, tableTest[, c(6, 8:11, 13, 15)])$class
+qda_result_fix <- table(qdaTest_fix, tableTest[, 4])
+qda_acc_fix <- (qda_result_fix[1] + qda_result_fix[4]) / sum(qda_result_fix)
+qda_result_fix
+cat("\nThe accuracy of this model is", qda_acc_fix)
+```
+This doesn't improve much, so I'll just use the original one.
+
+3| Discussion
+
+From my study, I found that QDA often produce a better model than LDA. Also, I think that this classification technique can be used to separate songs in other data set that has no such attribute, and this can probably make a better regression model.

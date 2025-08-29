@@ -1,0 +1,151 @@
+---
+title: "Introduction to Data Science"
+author: "111550037_嚴偉哲"
+date: "2023-10-16"
+output: html_document
+---
+
+#Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+#install.packages("GGally")
+#install.packages("plotly")
+```
+
+#Read and store the data
+
+```{r}
+table <- read.csv("spotify-2023-cleaned.csv", sep = ',')
+table_dirty <- read.csv("spotify-2023-uncleaned.csv", sep = ',')
+```
+
+#Main
+This section will mainly focus on finding the relationships between Stream Count and other parameters, and the Stream Count itself.
+
+#Histograms
+
+```{r}
+hist(table$streams, breaks = length(table$streams) / 10, main = "Histogram of Stream Counts", xlab = "Stream Count")
+```
+
+  As shown above, this graph has a high positive skew. This tells us that most of the popular songs are around the same stream counts and only few can get billions of views. But we can use another perspective.
+  If a song is more popular, it is more likely to be seen and listened to. Therefore, a logarithmic scale graph would be more appropriate.
+
+```{r}
+hist(log10(table$streams), breaks = length(table$streams) / 10, main = "Histogram of Stream Counts (Log)", xlab = "Stream Count (Log)")
+```
+
+  This graph has a more symmetric shape, and thus confirms our guess.
+  
+#Bar Plot
+  Here, I try to find the most streamed artists and visualize it with bar plot.
+```{r}
+art <- c()
+totalStr <- c()
+#adding the stream counts
+for (i in 1:length(table$streams)) {
+  temp <- unlist(strsplit(table$artist.s._name[i], split = ',')[[1]])
+  for (j in 1:length(temp)){
+    temp[j] <- trimws(temp[j])
+    if (temp[j] %in% art) {
+      totalStr[which(art == temp[j])] = totalStr[which(art == temp[j])] + as.numeric(table$streams[i])
+    }
+    else {
+      art <- append(temp[j], art)
+      totalStr <- append(as.numeric(table$streams[i]), totalStr)
+    }
+  }
+}
+#sort by stream count
+for (i in 1:(length(totalStr) - 1)) {
+  count = 0
+  for (j in 1:(length(totalStr) - i)) {
+    if (totalStr[j] < totalStr[j + 1]) {
+      swap_total <- totalStr[j]
+      totalStr[j] <- totalStr[j + 1]
+      totalStr[j + 1] <- swap_total
+      swap_art <- art[j]
+      art[j] <- art[j + 1]
+      art[j + 1] <- swap_art
+      count = count + 1
+    }
+  }
+  if (count == 0) {
+    break
+  }
+}
+barplot(height = totalStr[1:10], names = art[1:10], cex.names = 0.5)
+```
+
+  As the plot shows, "The Weeknd" has the highest view count.
+
+
+#Scatter Plot
+  The first thing I'm interested in is that whether the popularity of an artist affects the exposure of their songs. To do this, I use another data set called "Spotify Artist Stats", which includes the lead streams of 1000 artists up to 2022.
+
+```{r}
+artist <- read.csv("spotify_artist_data.csv", sep = ',')
+head(artist, 10)
+```
+  We sort it by the lead streams and draw a scatter plot. (If a song has multiple artists, we will choose the most popular one)
+  
+```{r}
+#bubble sort
+for (i in 1:(length(artist) - 1)) {
+  count = 0
+  for (j in 1:(length(artist) - i)) {
+    if (artist$Lead.Streams[j] < artist$Lead.Streams[j + 1]) {
+      swap <- artist[j,]
+      artist[j,] <- artist[j + 1,]
+      artist[j + 1,] <- swap
+      count = count + 1
+    }
+  }
+  if (count == 0) {
+    break
+  }
+}
+#create vectors
+stream <- c()
+composer <- c()
+composerStream <- c()
+for (i in 1:length(table$artist.s._name)) {
+  temp <- unlist(strsplit(table$artist.s._name[i], split = ',')[[1]])
+  high <- min(match(temp, artist$Artist.Name))
+  #This is to eliminate those who are not on the artist list
+  if (!is.na(high)) {
+    stream <- append(log10(table$streams[i]), stream)
+    composer <- append(high, composer)
+    composerStream <- append(log10(as.numeric(gsub(",", "", artist$Lead.Streams[high]))), composerStream)
+  }
+}
+plot(composer, stream, main = "Scatter Plot of Stream Counts and Popular Artists", xlab = "Artist Rank", ylab = "Streams (Log)", pch = 20, col = "darkgrey")
+plot(composerStream, stream, main = "Scatter Plot of Stream Counts and Artist Leading Streams", xlab = "Artist Leading Stream (Log)", ylab = "Streams (Log)", pch = 20, col = "darkgrey")
+```
+
+  Surprisingly, being a well known artist doesn't necessarily mean their song would have a high view count. However, this graph does tell us that, the more popular an artist is, the higher chance their song would gain attraction. (The dots are denser as the rank goes higher)
+
+#Scatter Plot Matrix
+In this part, I want to see the relations between stream counts, danceability, valence, and energy.
+
+```{r}
+library(ggplot2) 
+library(GGally)
+compare <- table[c(9, 17:24)]
+compare$streams <- log10(compare$streams)
+pairs(compare[c(1, 3:5)], lower.panel = NULL, pch = 18, col = "darkgrey") 
+ggpairs(compare[c(1, 3:5)], axisLabels = "show")
+```
+
+  Oddly enough, these three attributes shows no correlation with the stream counts. Because of this, I tried to catagorize them by mode.
+
+```{r}
+compare$mode[compare$mode == "Major"] = "1"
+compare$mode[compare$mode == "Minor"] = "2"
+colors <- c("red", "blue")
+pairs(compare[c(1, 3:5)], lower.panel = NULL, pch = 18, col = colors[as.numeric(compare$mode)])
+```
+
+  The red dots represent songs with Major key, and blue dots represent songs with Minor key. As shown above, these variables still has no relations after catagorizing. This could mean that the popularity of a song is determined by other factors, such as lyrics and MVs.

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Dengue Map</title>
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    </head>
+    <body>
+        <!-- Loader -->
+        <div id="load">
+            <div><b>Loading</b></div>
+        </div>
+        <!-- Interface -->
+         <div id="interface">
+            <h1>Taiwan Dengue Map // Group 32</h1>
+            <!-- Left Side -->
+            <div id="map"></div>
+            <!-- Right Side -->
+            <!-- 歯をむき出して -->
+            <div id="control">
+                <div id="timeline">
+                    <span class="title">Timeline</span>
+                    <span id="display-date"></span>
+                    <div id="scaled-time"></div>
+                    <div id="full-time"></div>
+                    <div id="time-settings">
+                        <div id='group'>
+                            <span style="padding: 0 10px"><b>Group By</b></span>
+                            <input type="radio" name="group" id="group-sex" value="sex" checked>
+                            <label for="group-sex">Sex</label>
+                            <input type="radio" name="group" id="group-age" value="age">
+                            <label for="group-age">Age</label>
+                            <input type="radio" name="group" id="group-type" value="type">
+                            <label for="group-type">Serotype</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="data-settings">
+                    <p class="title">Filter</p>
+                    <div id="sex">
+                        <p>Sex</p>
+                        <input type="checkbox" name="sex" id="male" value="M" checked>
+                        <span>Male</span><br>
+                        <input type="checkbox" name="sex" id="female" value="F" checked>
+                        <span>Female</span>
+                    </div>
+                    <div id="age">
+                        <p>Age Group</p>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="0-4" value="0" checked>
+                            <span>0-4</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="5-9" value="5" checked>
+                            <span>5-9</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="10-14" value="10" checked>
+                            <span>10-14</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="15-19" value="15" checked>
+                            <span>15-19</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="20-24" value="20" checked>
+                            <span>20-24</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="25-29" value="25" checked>
+                            <span>25-29</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="30-34" value="30" checked>
+                            <span>30-34</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="35-39" value="35" checked>
+                            <span>35-39</span>
+                        </span><br>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="40-44" value="40" checked>
+                            <span>40-44</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="45-49" value="45" checked>
+                            <span>45-49</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="50-54" value="50" checked>
+                            <span>50-54</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="55-59" value="55" checked>
+                            <span>55-59</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="60-64" value="60" checked>
+                            <span>60-64</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="65-69" value="65" checked>
+                            <span>65-69</span>
+                        </span>
+                        <span class="age-cell">
+                            <input type="checkbox" name="age" id="70" value="70" checked>
+                            <span>70+</span>
+                        </span>
+                    </div>
+                    <div id="type">
+                        <p>Serotype</p>
+                        <span class="type-cell">
+                            <input type="checkbox" name="type" id="none" value="None" checked>
+                            <span>None</span>
+                        </span>
+                        <span class="type-cell">
+                            <input type="checkbox" name="type" id="DENV1" value="DENV1" checked>
+                            <span>DENV1</span>
+                        </span>
+                        <span class="type-cell">
+                            <input type="checkbox" name="type" id="DENV2" value="DENV2" checked>
+                            <span>DENV2</span>
+                        </span>
+                        <span class="type-cell">
+                            <input type="checkbox" name="type" id="DENV3" value="DENV3" checked>
+                            <span>DENV3</span>
+                        </span>
+                        <span class="type-cell">
+                            <input type="checkbox" name="type" id="DENV4" value="DENV4" checked>
+                            <span>DENV4</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+        // jQuery - For elements accessing //
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js">
+        // Leaflet - For mapping //
+    </script>
+    <script src="https://d3js.org/d3.v7.js">
+        // d3 - For visualization drawing //
+    </script>
+    <script src="https://unpkg.com/d3-horizon-chart@0.0.5">
+        // d3 horizon chart extention //
+    </script>
+    <script src="FinalProject.js">
+        // User Code //
+    </script>
+</html>

@@ -1,0 +1,79 @@
+---
+title: "Introduction to Data Science HW2"
+author: "111550037_嚴偉哲"
+output: html_document
+date: "2023-10-02"
+---
+
+#Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+#install.packages("ggplot2")
+```
+
+#Read and store the data
+
+```{r}
+table <- read.csv("spotify-2023.csv", sep = ',')
+```
+
+#Analysis
+
+This section mainly focuses on what are the most common type of songs in this data set. This way, we can have some ideas about what do people prefer.
+
+1| Key & Mode
+
+```{r}
+key <- c(table$key)
+summary(factor(key));
+# the first column is the C key
+```
+  The most common key is C#, with 120 songs using it. This is interesting because it has 6 sharps(4 in minor) and is relatively difficult to compose and perform.
+
+```{r}
+mode <- c(table$mode)
+summary(factor(mode))
+```
+  We can see that Major is more popular than Minor, which is reasonable since Major keys are generally considered more happy and delightful.
+
+```{r}
+summary(factor(paste(key, mode, sep = " ")))
+# 'Major' means C major, and 'Minor' means C minor
+```
+  If we combine keys and modes, we can find that the most common one would be C Major(75 songs), followed by C# Major(73 songs) and D Major/G Major(66 songs).
+  
+2| BPM
+
+```{r}
+bpm <- c(table$bpm)
+summary(factor(bpm))
+hist(bpm, breaks = length(bpm), main = "Frequency of BPM in Songs")
+```
+```{r}
+count = 0
+for (x in 1:length(bpm)) {
+  if (bpm[x] <= 150 && bpm[x] >= 90) {
+    count = count + 1
+  }
+}
+print(paste("The number of songs of which its bpm is between 90 and 150 is", count, "."))
+```
+  The most common BPM in this data set is 120. It could be that it's a multiply of 60 so it syncs to a second. Also, most of the songs are in the 90-150 BPM range, as listeners can feel relaxed and not too overwhelmed by the fast tempo.
+  Another thing I noticed is that composers tend to use the multiply of 5 as the BPM of their songs.
+  
+3| Release Year
+
+```{r}
+year <- c(table$released_year)
+summary(year)
+hist(year, breaks = length(year), main = "Release Year of Songs")
+```
+  We can see that many people still listen to songs of last year. One possible reason is that 2023 is not over yet and so it has a relatively small data size.
+Additionally, as a song becomes 'older', its popularity gradually decreases.
+
+
+#Conclusion and Discussion
+
+From the analysis above, we can hypothesize that a song that's recently released, uses major keys, and is around 120 bpm is the top choice for most people. In the future analysis, I plan to combine and compare these variables to find out what makes a song popular.

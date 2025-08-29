@@ -1,0 +1,773 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Charting.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="using:Charting.Models"
+        xmlns:src="using:Charting.Source"
+        mc:Ignorable="d"
+        x:Class="Charting.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Charting"
+        WindowState="Maximized"
+        Focusable="True">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel>
+        <Grid ColumnDefinitions="100, *" RowDefinitions="40, 40, 40" DockPanel.Dock="Top">
+            <!-- Edit Tabs -->
+            <Button Click="ChangeEditMode" Grid.Row="0" Grid.Column="0" Name="EditSong" Classes="EditOption">
+                Song
+            </Button>
+            <Button Click="ChangeEditMode" Grid.Row="1" Grid.Column="0" Name="EditNote" Classes="EditOption">
+                Note
+            </Button>
+            <Button Click="ChangeEditMode" Grid.Row="2" Grid.Column="0" Name="EditControl" Classes="EditOption">
+                Control
+            </Button>
+            <!-- Lane Editor and Chart Loader -->
+            <ContentControl
+                Name="EditWindow"
+                Grid.Row="0"
+                Grid.Column="1"
+                Grid.RowSpan="3"
+                Content="{Binding}"
+                ContentTemplate="{StaticResource Unload}">
+                <!-- Change Edit Window -->
+                <Interaction.Behaviors>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Unload">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Unload}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Song">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Song}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Note">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Note}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Control">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Control}" />
+                    </DataTriggerBehavior>
+                </Interaction.Behaviors>
+            </ContentControl>
+        </Grid>
+        <Grid ColumnDefinitions="6*, *" RowDefinitions="3*, *">
+            <DockPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+                <ContentControl
+                    DockPanel.Dock="Top">
+                    <Border
+                        Name="Notification"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="10"
+                        Padding="50, 10"
+                        Height="50"
+                        MinWidth="400"
+                        Background="#35487187"
+                        CornerRadius="10"
+                        Opacity="0">
+                        <TextBlock
+                            Text="asdf"
+                            TextBlock.LineHeight="30"
+                            FontSize="20"
+                            TextAlignment="Center"/>
+                    </Border>
+                </ContentControl>
+                <DockPanel DockPanel.Dock="Bottom">
+                    <Button
+                        DockPanel.Dock="Right"
+                        Margin="0, 0, 50, 0"
+                        Click="StopSong">
+                        <Image Width="20" Height="20" Source="/Assets/stop.png" />
+                    </Button>
+                    <Button
+                        Name="PlayButton"
+                        DockPanel.Dock="Right"
+                        Click="PlaySong">
+                        <Image Width="20" Height="20" Source="/Assets/play.png"/>
+                    </Button>
+                    <Slider
+                        Name="SongPlayer_Timeline"
+                        Padding="50, 0, 10, 0"
+                        Minimum="0" Maximum="1"
+                        Value="{Binding Settings.Timer}"
+                        ValueChanged="UpdateSample"/>
+                </DockPanel>
+                <!-- Chart Display -->
+                <Canvas
+                    DockPanel.Dock="Top"
+                    Name="previewContainer"
+                    Width="960" Height="500">
+                    <src:Renderer
+                        Name="preview"
+                        Width="960" Height="500"
+                        Focusable="False"
+                        Canvas.Top="0" Canvas.Left="0"/>
+                </Canvas>
+                <DockPanel DockPanel.Dock="Bottom">
+                    <Grid
+                        ColumnDefinitions="*, 20, *" RowDefinitions="*, *"
+                        Margin="40, 0, 0, 0"
+                        DockPanel.Dock="Left">
+                        <TextBlock
+                            Classes="TimeDisplay"
+                            Grid.Row="0" Grid.Column="0"
+                            FontSize="12"
+                            Text="Beat"/>
+                        <TextBlock
+                            Name="timeDisplay_Beat"
+                            Classes="TimeDisplay"
+                            Grid.Row="1" Grid.Column="0"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="0.00"/>
+                        <TextBlock
+                            Classes="TimeDisplay"
+                            Grid.Row="1" Grid.Column="1"
+                            FontSize="20"
+                            TextAlignment="Center"
+                            Text="/"/>
+                        <TextBlock
+                            Classes="TimeDisplay"
+                            Grid.Row="0" Grid.Column="2"
+                            FontSize="12"
+                            Text="Time"/>
+                        <TextBlock
+                            Name="timeDisplay_Time"
+                            Classes="TimeDisplay"
+                            Grid.Row="1" Grid.Column="2"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="0:00.00"/>
+                    </Grid>
+                    <Slider
+                        DockPanel.Dock="Right"
+                        Margin="0, 0, 40, 0"
+                        Minimum="0" Maximum="1"
+                        Value="{Binding Settings.Volume}"
+                        Width="90"
+                    />
+                    <Border
+                        DockPanel.Dock="Right">
+                        <TextBlock
+                            Margin="0, 0, 20, 0"
+                            VerticalAlignment="Center">
+                            Volume
+                        </TextBlock>
+                    </Border>
+                    <ContentControl/>
+                </DockPanel>
+                <ContentControl/>
+            </DockPanel>
+            <!-- Control Point Detail -->
+            <ContentControl
+                Name="ControlPointWindow"
+                Grid.Row="0"
+                Grid.Column="1"
+                Content="{Binding}"
+                ContentTemplate="{StaticResource Detail_Unload}">
+                <Interaction.Behaviors>
+                    <!-- Display When Load or New Chart -->
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Unload">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Unload}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Song">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_BPM}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Note">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Note}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding EditMode}" ComparisonCondition="Equal" Value="Control">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Control}" />
+                    </DataTriggerBehavior>
+                </Interaction.Behaviors>
+            </ContentControl>
+            <!-- Global Setting -->
+            <DockPanel Name="GlobalSettingsWindow" Grid.Row="1" Grid.Column="1">
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *" DockPanel.Dock="Top">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Song Name" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="SongInfo_Name" Text="{Binding Chart.Name}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Artist" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="SongInfo_Artist" Text="{Binding Chart.Artist}" />
+                </Grid>
+                <Button
+                    Name="t"
+                    Click="Test"
+                    Content="Melody Detect!"
+                    DockPanel.Dock="Top">
+                </Button>
+                <Button
+                    Name="SongInfo_Save"
+                    Click="SaveChart"
+                    Content="Save"
+                    DockPanel.Dock="Bottom">
+                </Button>
+                <Button
+                    Name="SongInfo_New"
+                    Click="NewChart"
+                    Content="New"
+                    DockPanel.Dock="Left" />
+                <Button
+                    Name="SongInfo_Load"
+                    Click="LoadChart"
+                    Content="Load"
+                    DockPanel.Dock="Right" />
+            </DockPanel>
+        </Grid>
+
+        <!-- Styles -->
+        <DockPanel.Styles>
+            <Style Selector="Button.EditOption">
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            </Style>
+        </DockPanel.Styles>
+    </DockPanel>
+
+    <!-- Data Templates -->
+    <Window.Resources>
+        <!-- Edit Window -->
+        <DataTemplate x:Key="Unload" />
+        <DataTemplate x:Key="Song" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <Grid ColumnDefinitions="*, *, *" RowDefinitions="*, *, *" DockPanel.Dock="Left">
+                    <Button
+                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Click="AddNode"
+                        Content="Add Node"/>
+                    <Button
+                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Click="DeleteNode"
+                        Content="Delete Node"
+                        IsEnabled="{Binding CanDelete}"/>
+                    <Button Grid.Row="2" Grid.Column="0" Click="WindowZoomIn">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomin.png" />
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="1" Click="WindowZoomReset">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomReset.png" />
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="2" Click="WindowZoomOut">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomout.png" />
+                    </Button>
+                </Grid>
+                <Grid ColumnDefinitions="*, *, *, 2*, *, 2*, *, 2*, *, 2*" RowDefinitions="30" DockPanel.Dock="Top">
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="0"
+                        Text="Beat Snap"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <ToggleButton
+                        Grid.Row="0" Grid.Column="1"
+                        IsChecked="{Binding Settings.IsBeatSnap}" />
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="2"
+                        Text="Subdivision"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <NumericUpDown
+                        Grid.Row="0" Grid.Column="3"
+                        Minimum="1"
+                        FormatString="N0"
+                        ParsingNumberStyle="Integer"
+                        Increment="1"
+                        Value="{Binding Settings.Subdivision, Converter={StaticResource safeNumeric}}"
+                        PropertyChanged="UpdateWindow"/>
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="6"
+                        Text="Offset"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <TextBox
+                        Grid.Row="0" Grid.Column="7"
+                        Name="SongInfo_Offset (ms)"
+                        Text="{Binding Chart.Offset, Converter={StaticResource safeNumeric}}"
+                        TextChanged="UpdateOffset"/>
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="8"
+                        Text="Difficulty"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <TextBox
+                        Grid.Row="0" Grid.Column="9"
+                        Name="SongInfo_Difficulty"
+                        Text="{Binding Chart.Difficulty, Converter={StaticResource safeNumeric}}"/>
+                </Grid>
+                <ContentControl DockPanel.Dock="Top">
+                    <Canvas Name="timelineContainer">
+                        <Line
+                            StartPoint="260, 0" EndPoint="260, 70"
+                            Stroke="Red"
+                            StrokeThickness="2"/>
+                        <ScrollViewer
+                            Name="timeline"
+                            AllowAutoHide="False"
+                            Height="90"
+                            Canvas.Left="50"
+                            HorizontalScrollBarVisibility="Visible"
+                            VerticalScrollBarVisibility="Disabled"
+                            MaxWidth="1200"
+                            ScrollChanged="SetOffset">
+                            <Canvas Name="timelineDisplayContainer" AttachedToVisualTree="InitializeGraph">
+                                <src:Renderer Name="timelineDisplay" IsHitTestVisible="False"/>
+                            </Canvas>
+                        </ScrollViewer>
+                    </Canvas>
+                </ContentControl>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Note" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <Grid ColumnDefinitions="*, *, *" RowDefinitions="*, *, *" DockPanel.Dock="Left">
+                    <Button
+                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Click="AddNode"
+                        Content="Add Note"/>
+                    <Button
+                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Click="DeleteNode"
+                        Content="Delete Note"
+                        IsEnabled="{Binding CanDelete}"/>
+                    <Button Grid.Row="2" Grid.Column="0" Click="WindowZoomIn">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomin.png" />
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="1" Click="WindowZoomReset">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomReset.png" />
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="2" Click="WindowZoomOut">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomout.png" />
+                    </Button>
+                </Grid>
+                <Grid ColumnDefinitions="*, *, *, 2*, *, 2*, 0.5*, 2.5*, *, 2*" RowDefinitions="30" DockPanel.Dock="Top">
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="0"
+                        Text="Beat Snap"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <ToggleButton
+                        Grid.Row="0" Grid.Column="1"
+                        IsChecked="{Binding Settings.IsBeatSnap}" />
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="2"
+                        Text="Subdivision"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <NumericUpDown
+                        Grid.Row="0" Grid.Column="3"
+                        Minimum="1"
+                        FormatString="N0"
+                        ParsingNumberStyle="Integer"
+                        Increment="1"
+                        Value="{Binding Settings.Subdivision, Converter={StaticResource safeNumeric}}"
+                        PropertyChanged="UpdateWindow"/>
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="4"
+                        Text="LaneID"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <NumericUpDown
+                        Name="LaneSwitch"
+                        Grid.Row="0" Grid.Column="5"
+                        Minimum="1" Maximum="{Binding Chart.Lanes, Converter={StaticResource maxLaneID}}"
+                        FormatString="N0"
+                        ParsingNumberStyle="Integer"
+                        Increment="1"
+                        Value="{Binding Cache.Lane, Converter={StaticResource addOne}}"
+                        PropertyChanged="UpdateWindow"/>
+                    <Button 
+                        Content="+"
+                        Grid.Row="0" Grid.Column="6"
+                        Click="AddLane"/>
+                    <Button 
+                        Content="Delete Lane"
+                        Grid.Row="0" Grid.Column="7"
+                        Click="DeleteLane"/>
+                </Grid>
+                <ContentControl DockPanel.Dock="Top">
+                    <Canvas Name="timelineContainer">
+                        <Line
+                            StartPoint="260, 0" EndPoint="260, 70"
+                            Stroke="Red"
+                            StrokeThickness="2"/>
+                        <ScrollViewer
+                            Name="timeline"
+                            AllowAutoHide="False"
+                            Height="90"
+                            Canvas.Left="50"
+                            HorizontalScrollBarVisibility="Visible"
+                            VerticalScrollBarVisibility="Disabled"
+                            MaxWidth="1200"
+                            ScrollChanged="SetOffset">
+                            <Canvas Name="timelineDisplayContainer" AttachedToVisualTree="InitializeGraph">
+                                <src:Renderer Name="timelineDisplay" IsHitTestVisible="False"/>
+                            </Canvas>
+                        </ScrollViewer>
+                    </Canvas>
+                </ContentControl>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Control" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <Grid ColumnDefinitions="*, *, *" RowDefinitions="*, *, *" DockPanel.Dock="Left">
+                    <Button
+                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Click="AddNode"
+                        Content="Add Node"/>
+                    <Button
+                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Click="DeleteNode"
+                        Content="Delete Node"
+                        IsEnabled="{Binding CanDelete}"/>
+                    <Button Grid.Row="2" Grid.Column="0" Click="WindowZoomIn">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomin.png" />
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="1" Click="WindowZoomReset">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomReset.png" />
+                    </Button>
+                    <Button Grid.Row="2" Grid.Column="2" Click="WindowZoomOut">
+                        <Image
+                            Width="20" Height="20"
+                            Source="/Assets/zoomout.png" />
+                    </Button>
+                </Grid>
+                <Grid ColumnDefinitions="*, *, *, 2*, *, 2*, 0.5*, 2.5*, *, 2*" RowDefinitions="30" DockPanel.Dock="Top">
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="0"
+                        Text="Beat Snap"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <ToggleButton
+                        Grid.Row="0" Grid.Column="1"
+                        IsChecked="{Binding Settings.IsBeatSnap}" />
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="2"
+                        Text="Subdivision"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <NumericUpDown
+                        Grid.Row="0" Grid.Column="3"
+                        Minimum="1"
+                        FormatString="N0"
+                        ParsingNumberStyle="Integer"
+                        Increment="1"
+                        Value="{Binding Settings.Subdivision, Converter={StaticResource safeNumeric}}"
+                        PropertyChanged="UpdateWindow"/>
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="4"
+                        Text="LaneID"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <NumericUpDown
+                        Name="LaneSwitch"
+                        Grid.Row="0" Grid.Column="5"
+                        Minimum="1" Maximum="{Binding Chart.Lanes, Converter={StaticResource maxLaneID}}"
+                        FormatString="N0"
+                        ParsingNumberStyle="Integer"
+                        Increment="1"
+                        Value="{Binding Cache.Lane, Converter={StaticResource addOne}}"
+                        PropertyChanged="UpdateWindow"/>
+                    <Button 
+                        Content="+"
+                        Grid.Row="0" Grid.Column="6"
+                        Click="AddLane"/>
+                    <Button 
+                        Content="Delete Lane"
+                        Grid.Row="0" Grid.Column="7"
+                        Click="DeleteLane"/>
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="8"
+                        Text="Type"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Padding="0, 0, 10, 0"/>
+                    <ComboBox
+                        Grid.Row="0" Grid.Column="9"
+                        Name="nodeType"
+                        MaxDropDownHeight="250"
+                        SelectedIndex="{Binding SelectedNodeType, Converter={StaticResource comboBoxSelection}, ConverterParameter=control}"
+                        SelectionChanged="NodeUpdate">
+                        <ComboBoxItem>Position</ComboBoxItem>
+                        <ComboBoxItem>Alpha</ComboBoxItem>
+                        <ComboBoxItem>Speed</ComboBoxItem>
+                        <ComboBoxItem>Endpoint</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+                <ContentControl DockPanel.Dock="Top">
+                    <Canvas Name="timelineContainer">
+                        <Line
+                            StartPoint="260, 0" EndPoint="260, 70"
+                            Stroke="Red"
+                            StrokeThickness="2"/>
+                        <ScrollViewer
+                            Name="timeline"
+                            AllowAutoHide="False"
+                            Height="90"
+                            Canvas.Left="50"
+                            HorizontalScrollBarVisibility="Visible"
+                            VerticalScrollBarVisibility="Disabled"
+                            MaxWidth="1200"
+                            ScrollChanged="SetOffset">
+                            <Canvas Name="timelineDisplayContainer" AttachedToVisualTree="InitializeGraph">
+                                <src:Renderer Name="timelineDisplay" IsHitTestVisible="False"/>
+                            </Canvas>
+                        </ScrollViewer>
+                    </Canvas>
+                </ContentControl>
+            </DockPanel>
+        </DataTemplate>
+
+        <!-- Node Details -->
+        <DataTemplate x:Key="Detail_Unload">
+            <TextBlock Text="Open or Create a Chart" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_BPM" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <TextBlock Text="BPM Control Node" DockPanel.Dock="Top" />
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *" DockPanel.Dock="Top">
+                    <TextBlock Text="Beat" Grid.Row="0" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "0"
+                        Grid.Column="1"
+                        Text="{Binding Cache.BPMControl.Beat, Converter={StaticResource safeNumericBeat}}"
+                        TextChanged="UpdateWindow"/>
+                    <TextBlock Text="BPM" Grid.Row="1" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "1"
+                        Grid.Column="1"
+                        Text="{Binding Cache.BPMControl.BPM, Converter={StaticResource safeNumeric_BPM}}"
+                        TextChanged="UpdateWindow"/>
+                    <TextBlock Text="Easing" Grid.Row="2" Grid.Column="0" />
+                    <ComboBox
+                        MaxDropDownHeight="100"
+                        Grid.Row="2" Grid.Column="1"
+                        SelectedIndex="{Binding Cache.BPMControl.Easing, Converter={StaticResource comboBoxSelection}, ConverterParameter=simple}"
+                        SelectionChanged="NodeUpdate">
+                        <ComboBoxItem>Hold</ComboBoxItem>
+                        <ComboBoxItem>Linear</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+                <TextBlock />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Note" DataType="vm:MainWindowViewModel">
+            <DockPanel AttachedToVisualTree="SetProperties">
+                <TextBlock
+                    Name="NoteDetail_Desc"
+                    Text="Tap Note Details"
+                    DockPanel.Dock="Top" />
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *" DockPanel.Dock="Top">
+                    <TextBlock Text="Type" Grid.Row="0" Grid.Column="0" />
+                    <ComboBox
+                        MaxDropDownHeight="200"
+                        Grid.Row="0" Grid.Column="1"
+                        SelectedIndex="{Binding Cache.Note.Type, Converter={StaticResource comboBoxSelection}, ConverterParameter=note}"
+                        SelectionChanged="NodeUpdate">
+                        <ComboBoxItem>Tap</ComboBoxItem>
+                        <ComboBoxItem>Track</ComboBoxItem>
+                        <ComboBoxItem>Clap</ComboBoxItem>
+                        <ComboBoxItem>Punch</ComboBoxItem>
+                        <ComboBoxItem>Avoid</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock Text="Beat" Grid.Row="1" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "1"
+                        Grid.Column="1"
+                        Text="{Binding Cache.Note.Beat, Converter={StaticResource safeNumericBeat}}"
+                        TextChanged="UpdateWindow"/>
+                    <TextBlock
+                        Name="NoteDetail_DurationText"
+                        Text="Duration"
+                        Grid.Row="2" Grid.Column="0" />
+                    <TextBox
+                        Name="NoteDetail_Duration"
+                        Grid.Row="2" Grid.Column="1"
+                        Text="{Binding Cache.Note.Duration, Converter={StaticResource safeNumeric}}"/>
+                </Grid>
+                <TextBlock />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Note_Empty">
+            <DockPanel>
+                <TextBlock Text="Create A Node" />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Control" DataType="vm:MainWindowViewModel">
+            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Detail_Control_Position}">
+                <!-- This is to simulate MutiDataTriggers (A Nested DataTemplate Approach) -->
+                <Interaction.Behaviors>
+                    <DataTriggerBehavior Binding="{Binding SelectedNodeType}" ComparisonCondition="Equal" Value="Position">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Control_Position}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding SelectedNodeType}" ComparisonCondition="Equal" Value="Alpha">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Control_Alpha}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding SelectedNodeType}" ComparisonCondition="Equal" Value="Speed">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Control_Speed}" />
+                    </DataTriggerBehavior>
+                    <DataTriggerBehavior Binding="{Binding SelectedNodeType}" ComparisonCondition="Equal" Value="Endpoint">
+                        <ChangePropertyAction PropertyName="ContentTemplate" Value="{StaticResource Detail_Control_Endpoint}" />
+                    </DataTriggerBehavior>
+                </Interaction.Behaviors>
+            </ContentControl>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Control_Position" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <TextBlock Text="Position Node Details" DockPanel.Dock="Top" />
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *" DockPanel.Dock="Top">
+                    <TextBlock Text="Beat" Grid.Row="0" Grid.Column="0" />
+                    <TextBox
+                        Name="PosBeat"
+                        Grid.Row="0" Grid.Column="1"
+                        Text="{Binding Cache.PositionControl.Beat, Converter={StaticResource safeNumericBeat}}"
+                        TextChanged="UpdateWindow"/>
+                    <TextBlock Text="Position" Grid.Row="1" Grid.Column="0" />
+                    <Grid Grid.Row="1" Grid.Column="1" RowDefinitions="*" ColumnDefinitions="*, *">
+                        <TextBox
+                            Name="PosX"
+                            Grid.Row="0" Grid.Column="0"
+                            Text="{Binding Cache.PositionControl.Position.X, Converter={StaticResource safeNumeric}}"
+                            TextChanged="UpdateSample"/>
+                        <TextBox
+                            Name="PosY"
+                            Grid.Row="0" Grid.Column="1"
+                            Text="{Binding Cache.PositionControl.Position.Y, Converter={StaticResource safeNumeric}}"
+                            TextChanged="UpdateSample"/>
+                    </Grid>
+                    <TextBlock Text="Easing" Grid.Row="2" Grid.Column="0" />
+                    <ComboBox MaxDropDownHeight="100" Grid.Row="2" Grid.Column="1"
+                        SelectedIndex="{Binding Cache.PositionControl.Easing, Converter={StaticResource comboBoxSelection}, ConverterParameter=complex}"
+                        SelectionChanged="NodeUpdate">
+                        <ComboBoxItem>Hold</ComboBoxItem>
+                        <ComboBoxItem>Linear</ComboBoxItem>
+                        <ComboBoxItem>Ease In Out</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*" DockPanel.Dock="Bottom">
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="0"
+                        Text="Grid Snap"/>
+                    <ToggleButton
+                        Grid.Row="0" Grid.Column="1"
+                        IsChecked="{Binding Settings.IsGridSnap}"/>
+                </Grid>
+                <TextBlock />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Control_Alpha" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <TextBlock Text="Alpha Node Details" DockPanel.Dock="Top" />
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *" DockPanel.Dock="Top">
+                    <TextBlock Text="Beat" Grid.Row="0" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "0"
+                        Grid.Column="1"
+                        Text="{Binding Cache.AlphaControl.Beat, Converter={StaticResource safeNumericBeat}}"
+                        TextChanged="UpdateWindow"/>
+                    <TextBlock Text="Alpha" Grid.Row="1" Grid.Column="0" />
+                    <Slider
+                        Name="Detail_Alpha"
+                        Grid.Row="1" Grid.Column="1"
+                        Minimum="0" Maximum="1"
+                        Value="{Binding Cache.AlphaControl.Alpha}"
+                        ValueChanged="UpdateSample"/>
+                    <TextBlock Text="Easing" Grid.Row="2" Grid.Column="0" />
+                    <ComboBox MaxDropDownHeight="100" Grid.Row="2" Grid.Column="1"
+                        SelectedIndex="{Binding Cache.AlphaControl.Easing, Converter={StaticResource comboBoxSelection}, ConverterParameter=simple}"
+                        SelectionChanged="NodeUpdate">
+                        <ComboBoxItem>Hold</ComboBoxItem>
+                        <ComboBoxItem>Linear</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+                <TextBlock />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Control_Speed" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <TextBlock Text="Speed Node Details" DockPanel.Dock="Top" />
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *" DockPanel.Dock="Top">
+                    <TextBlock Text="Beat" Grid.Row="0" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "0"
+                        Grid.Column="1"
+                        Text="{Binding Cache.SpeedControl.Beat, Converter={StaticResource safeNumericBeat}}"
+                        TextChanged="UpdateWindow"/>
+                    <TextBlock Text="Speed" Grid.Row="1" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "1"
+                        Grid.Column="1"
+                        Text="{Binding Cache.SpeedControl.Speed, Converter={StaticResource safeNumeric}}"
+                        TextChanged="UpdateSample"/>
+                    <TextBlock Text="Easing" Grid.Row="2" Grid.Column="0" />
+                    <ComboBox
+                        MaxDropDownHeight="100"
+                        Grid.Row="2" Grid.Column="1"
+                        SelectedIndex="{Binding Cache.SpeedControl.Easing, Converter={StaticResource comboBoxSelection}, ConverterParameter=simple}"
+                        SelectionChanged="NodeUpdate">
+                        <ComboBoxItem>Hold</ComboBoxItem>
+                        <ComboBoxItem>Linear</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+                <TextBlock />
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Detail_Control_Endpoint" DataType="vm:MainWindowViewModel">
+            <DockPanel>
+                <TextBlock Text="Endpoint Node Detail" DockPanel.Dock="Top" />
+                <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *" DockPanel.Dock="Top">
+                    <TextBlock Text="Beat" Grid.Row="0" Grid.Column="0" />
+                    <TextBox
+                        Grid.Row = "0"
+                        Grid.Column="1"
+                        Text="{Binding Cache.EndpointControl.Beat, Converter={StaticResource safeNumericBeat}}"
+                        TextChanged="UpdateWindow"/>
+                </Grid>
+                <TextBlock />
+            </DockPanel>
+        </DataTemplate>
+
+        <!-- Converters -->
+        <models:SafeNumericConverter x:Key="safeNumeric" />
+        <models:SafeNumericBeatConverter x:Key="safeNumericBeat" />
+        <models:SafeNumericConverterForBPM x:Key="safeNumeric_BPM" />
+        <models:BooleanInverseConverter x:Key="booleanInverse" />
+        <models:ComboBoxSelectionConverter x:Key="comboBoxSelection" />
+        <models:MaxLaneIDConverter x:Key="maxLaneID" />
+        <models:AddOneConverter x:Key="addOne" />
+        <models:NoteNullCheckConverter x:Key="noteNullCheck" />
+    </Window.Resources>
+</Window>

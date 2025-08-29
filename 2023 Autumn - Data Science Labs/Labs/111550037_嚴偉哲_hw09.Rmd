@@ -1,0 +1,129 @@
+---
+title: "Introduction to Data Science HW9"
+author: "111550037_嚴偉哲"
+date: "2023-12-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+options(scipen = 999)
+```
+
+In this homework, I want to see the relationships between different genres. The data set I used is called "Spotify Tracks Genre", it contains 114 different genres, with 1000 songs in each category and 15 attributes.
+
+We begin by importing the dataset:
+
+```{r}
+table <- read.csv("train.csv")
+```
+
+1 | Hierarchical Clustering
+
+Since there are many songs in one genre, I first take the mean value of the attributes.
+
+```{r}
+genre <- data.frame("genre" = rep("", 114),
+                    "popularity" = rep(0, 114),
+                    "duration" = rep(0, 114),
+                    "danceability" = rep(0, 114),
+                    "energy" = rep(0, 114),
+                    "loudness" = rep(0, 114),
+                    "mode" = rep(0, 114),
+                    "speechiness" = rep(0, 114),
+                    "acousticness" = rep(0, 114),
+                    "instrumentalness" = rep(0, 114),
+                    "liveness" = rep(0, 114),
+                    "valence" = rep(0, 114),
+                    "tempo" = rep(0, 114))
+for (i in 1:114) {
+  head <- (i - 1) * 1000 + 1
+  tail <- i * 1000
+  genre$genre[i] = table$track_genre[tail]
+  genre$popularity[i] = mean(table$popularity[head:tail])
+  genre$duration[i] = mean(table$duration_ms[head:tail])
+  genre$danceability[i] = mean(table$danceability[head:tail])
+  genre$energy[i] = mean(table$energy[head:tail])
+  genre$loudness[i] = mean(table$loudness[head:tail])
+  genre$mode[i] = mean(table$mode[head:tail])
+  genre$speechiness[i] = mean(table$speechiness[head:tail])
+  genre$acousticness[i] = mean(table$acousticness[head:tail])
+  genre$instrumentalness[i] = mean(table$instrumentalness[head:tail])
+  genre$liveness[i] = mean(table$liveness[head:tail])
+  genre$valence[i] = mean(table$valence[head:tail])
+  genre$tempo[i] = mean(table$tempo[head:tail])
+}
+genre
+```
+Next, we construct a correlation matrix.
+
+```{r}
+#transpose data frame
+library(data.table)
+Tgenre <- transpose(genre)[-1,]
+colnames(Tgenre) <- genre$genre
+#parse to numeric
+for (i in 1:length(Tgenre)) {
+  for(j in 1:length(Tgenre[1])) {
+    Tgenre[i][[j]] <- as.numeric(Tgenre[i][[j]])
+  }
+}
+cor(Tgenre)
+write.csv(Tgenre, "genre.csv")
+```
+
+(for some reason the correlations are all 1???)
+(below) tried export then import again
+
+```{r}
+test <- read.csv("genre.csv", sep = ',')
+cor(test[-1])
+```
+
+```{r}
+hGenre <- genre[,-1]
+rownames(hGenre) <- genre[,1]
+plot(hclust(dist(hGenre, method = "euclidean", diag = T), method = "complete"), sub = "", xlab = "Genre", ylab = "Distance", cex = 0.5)
+abline(h = 120000, col = "red")
+```
+Using complete linkage with cut at 120000, we can see that the genres can be split into 3 groups.
+
+```{r}
+hGenre <- genre[,-1]
+rownames(hGenre) <- genre[,1]
+plot(hclust(dist(hGenre, method = "euclidean", diag = T), method = "average"), sub = "", xlab = "Genre", ylab = "Distance", cex = 0.5)
+```
+```{r}
+hGenre <- genre[,-1]
+rownames(hGenre) <- genre[,1]
+plot(hclust(dist(hGenre, method = "euclidean", diag = T), method = "ward.D"), sub = "", xlab = "Genre", ylab = "Distance", cex = 0.5)
+```
+```{r}
+hGenre <- genre[,-1]
+rownames(hGenre) <- genre[,1]
+plot(hclust(dist(hGenre, method = "euclidean", diag = T), method = "single"), sub = "", xlab = "Genre", ylab = "Distance", cex = 0.5)
+```
+2 | K-means Clustering
+
+```{r}
+library(cluster)
+km3 <- kmeans(hGenre, 3)
+clusplot(hGenre, km3$cluster, color = T, shade = T, labels = 2)
+```
+```{r}
+library(cluster)
+km4 <- kmeans(hGenre, 4)
+clusplot(hGenre, km4$cluster, color = T, shade = T, labels = 2)
+```
+3 | Silhouette Plot
+
+```{r}
+sil_3 <- silhouette(km3$cluster, dist(hGenre, method = "euclidean", diag = T))
+plot(sil_3, main = "Silhouette plot for 3-means",  col = c("red", "green", "blue"))
+```
+```{r}
+sil_4 <- silhouette(km4$cluster, dist(hGenre, method = "euclidean", diag = T))
+plot(sil_4, main = "Silhouette plot for 4-means",  col = c("red", "green", "blue", "brown"))
+```
+

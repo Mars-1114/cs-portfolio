@@ -1,0 +1,616 @@
+{
+  "Name": "Flow",
+  "Artist": "Creo",
+  "Difficulty": 1.0,
+  "Offset": 0.0,
+  "BPMControl": [
+    {
+      "Beat": 0.0,
+      "BPM": 135.0,
+      "Easing": "hold"
+    },
+    {
+      "Beat": 1.0,
+      "BPM": 135.0,
+      "Easing": "hold"
+    }
+  ],
+  "Lanes": [
+    {
+      "ID": 0,
+      "Notes": [
+        {
+          "Beat": 1.875,
+          "Type": "track",
+          "Duration": 1.0
+        },
+        {
+          "Beat": 4.5,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 6.0,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 7.875,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 10.5,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 12.0,
+          "Type": "punch",
+          "Duration": 0.0
+        }
+      ],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 5.0,
+              "Y": -5.0
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 3.0,
+            "Position": {
+              "X": 5.0,
+              "Y": -5.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 4.0,
+            "Position": {
+              "X": 8.0,
+              "Y": -2.0
+            },
+            "Easing": "hold"
+          },
+          {
+            "Beat": 40.0,
+            "Position": {
+              "X": 4.0,
+              "Y": -4.0
+            },
+            "Easing": "linear"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": -1.0,
+            "Alpha": 1.0,
+            "Easing": "hold"
+          },
+          {
+            "Beat": 40.0,
+            "Alpha": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": -1.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          },
+          {
+            "Beat": 0.0,
+            "Speed": -1.0,
+            "Easing": "linear"
+          },
+          {
+            "Beat": 1.875,
+            "Speed": 1.0,
+            "Easing": "hold"
+          },
+          {
+            "Beat": 40.0,
+            "Speed": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 1,
+      "Notes": [
+        {
+          "Beat": 2.25,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 3.375,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 5.25,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 7.125,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 8.25,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 9.375,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 11.25,
+          "Type": "punch",
+          "Duration": 0.0
+        },
+        {
+          "Beat": 14.0,
+          "Type": "punch",
+          "Duration": 0.0
+        }
+      ],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": -1.0,
+            "Position": {
+              "X": -5.0,
+              "Y": -5.0
+            },
+            "Easing": "linear"
+          },
+          {
+            "Beat": 40.0,
+            "Position": {
+              "X": -5.0,
+              "Y": -5.0
+            },
+            "Easing": "linear"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": -1.0,
+            "Alpha": 1.0,
+            "Easing": "hold"
+          },
+          {
+            "Beat": 40.0,
+            "Alpha": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": -1.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          },
+          {
+            "Beat": 0.0,
+            "Speed": -1.0,
+            "Easing": "linear"
+          },
+          {
+            "Beat": 2.25,
+            "Speed": 1.0,
+            "Easing": "linear"
+          },
+          {
+            "Beat": 40.0,
+            "Speed": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 2,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": -4.0,
+              "Y": 0.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": -8.0,
+              "Y": 4.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 3,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 6.0,
+              "Y": 3.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 8.0,
+              "Y": 5.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 4,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": -8.0,
+              "Y": 5.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": -7.0,
+              "Y": -1.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 5,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 1.0,
+              "Y": 7.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 10.0,
+              "Y": 1.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 6,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 8.0,
+              "Y": -2.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": -3.0,
+              "Y": 3.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 7,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 11.0,
+              "Y": -6.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": -10.0,
+              "Y": 1.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 8,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": -12.0,
+              "Y": -3.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 3.0,
+              "Y": 6.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 9,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": -4.0,
+              "Y": 6.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 7.0,
+              "Y": -5.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 10,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": -9.0,
+              "Y": 1.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 0.0,
+              "Y": 6.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    },
+    {
+      "ID": 11,
+      "Notes": [],
+      "Nodes": {
+        "PositionControl": [
+          {
+            "Beat": 0.0,
+            "Position": {
+              "X": 10.0,
+              "Y": 6.0
+            },
+            "Easing": "easeInOut"
+          },
+          {
+            "Beat": 39.0,
+            "Position": {
+              "X": 4.0,
+              "Y": 2.0
+            },
+            "Easing": "easeInOut"
+          }
+        ],
+        "AlphaControl": [
+          {
+            "Beat": 0.0,
+            "Alpha": 1.0,
+            "Easing": "linear"
+          }
+        ],
+        "SpeedControl": [
+          {
+            "Beat": 0.0,
+            "Speed": 1.0,
+            "Easing": "hold"
+          }
+        ],
+        "EndpointControl": []
+      }
+    }
+  ]
+}
