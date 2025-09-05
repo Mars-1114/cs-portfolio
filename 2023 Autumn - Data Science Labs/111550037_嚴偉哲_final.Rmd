@@ -1,0 +1,307 @@
+---
+title: "Introduction to Data Science Final Project"
+author: "111550037_嚴偉哲"
+date: "2023-12-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/ASUS/Desktop/大學/數據科學概論")
+```
+
+# Import Data Sets
+
+```{r}
+table_yearly <- read.csv("playlist_2010to2022.csv", sep = ',')
+table_pop <- read.csv("spotify-2023-cleaned.csv", sep = ',')
+table_pop_adj <- read.csv("spotify-2023-adjusted.csv", sep = ',')
+table_genre <- read.csv("train.csv", sep = ',')
+```
+
+# Include Library
+
+```{r}
+library(ggplot2)
+library(jsonlite)
+library(MASS)
+library(GGally)
+```
+
+# Step 1 - Classification
+
+```{r}
+genre <- c("pop")
+genre_count_weighted <- c(0)
+for (i in 1:length(table_yearly$artist_genres)){
+  table_yearly$artist_genres[i] <- gsub("'", "\"", table_yearly$artist_genres[i])
+  temp <- fromJSON(table_yearly$artist_genres[i])
+  for (j in temp) {
+    if (!(j %in% genre)) {
+      genre <- append(genre, j)
+      genre_count_weighted <- append(genre_count_weighted, 0.2 + 0.8 * (table_yearly$year[i] - 2000) / 23)
+    }
+    else {
+      genre_count_weighted[match(j, genre)] <- genre_count_weighted[match(j, genre)] + 0.2 + 0.8 * (table_yearly$year[i] - 2000) / 23
+    }
+  }
+}
+sample <- data.frame(genre = genre, count = genre_count_weighted)
+sample <- sample[order(sample$count, decreasing = TRUE),]
+sample
+```
+Here I picked the top 2 as the classification and the rest as "others".
+
+- Change Attributes
+
+```{r}
+new_table_genre <- table_genre[c(20001:21000, 81001:82000, 87001:87500, 71001:72000),]
+for (i in 2001:3500) {
+  new_table_genre$track_genre[i] <- "others"
+}
+new_table_genre
+```
+- classification
+
+Here I use LDA to do the job.
+
+```{r}
+lda_genre <- lda(track_genre~danceability + energy + acousticness + instrumentalness + liveness + valence + tempo,  prior = c(1, 1, 1) / 3, data = new_table_genre)
+lda_genre
+```
+- Visualize
+
+```{r}
+pre <- data.frame(predict(lda_genre)$x)
+pre$class <- predict(lda_genre)$class
+lda_genre_2d <- lda(class~LD1 + LD2, data = pre)
+ld1lim <- range(c(min(pre$LD1), max(pre$LD1)), mul = 0.05)
+ld2lim <- range(c(min(pre$LD2), max(pre$LD2)), mul = 0.05)
+ld1 <- seq(ld1lim[[1]], ld1lim[[2]], length.out = 300)
+ld2 <- seq(ld2lim[[1]], ld2lim[[2]], length.out = 300)
+newdat <- expand.grid(list(LD1 = ld1, LD2 = ld2))
+preds <- predict(lda_genre_2d, newdata = newdat)
+predclass <- preds$class
+postprob <- preds$posterior
+df <- data.frame(x = newdat$LD1, y = newdat$LD2, class = predclass)
+df$classnum <- as.numeric(df$class)
+df <- cbind(df, postprob)
+df <- df[-which(df$y > max(pre$LD2)),]
+pre$class <- new_table_genre$track_genre
+
+# plot
+ggplot(pre, aes(x = LD1, y = LD2, colour = class)) + 
+  geom_point() +
+  geom_raster(data = df, aes(x = x, y = y, fill = factor(class)), alpha = 0.4, show.legend = FALSE) +
+  geom_contour(data = df, aes(x = x, y = y, z = classnum), colour = "black", alpha=0.5, breaks=c(1.5, 2.5))
+```
+2 | Regression
+
+- Change Class Name
+
+```{r}
+new_table_pop <- data.frame(name = table_pop$track_name,
+                            # slot for genre classification
+                            genre = rep("", 953),
+                            streams = log10(table_pop$streams),
+                            danceability = table_pop$danceability_. / 100,
+                            energy = table_pop$energy_. / 100,
+                            acousticness = table_pop$acousticness_. / 100,
+                            instrumentalness = table_pop$instrumentalness_. / 100,
+                            liveness = table_pop$liveness_. / 100,
+                            valence = table_pop$valence_. / 100,
+                            tempo = table_pop$bpm)
+new_table_pop_adj <- data.frame(name = table_pop_adj$track_name,
+                                # slot for genre classification
+                                genre = rep("", 953),
+                                streams = log10(table_pop_adj$streams),
+                                danceability = table_pop_adj$danceability_. / 100,
+                                energy = table_pop_adj$energy_. / 100,
+                                acousticness = table_pop_adj$acousticness_. / 100,
+                                instrumentalness = table_pop_adj$instrumentalness_. / 100,
+                                liveness = table_pop_adj$liveness_. / 100,
+                                valence = table_pop_adj$valence_. / 100,
+                                tempo = table_pop_adj$bpm)
+new_table_pop
+```
+- Assign Genre
+
+```{r}
+new_table_pop$genre <- predict(lda_genre, new_table_pop[,3:10])$class
+new_table_pop_adj$genre <- predict(lda_genre, new_table_pop_adj[,3:10])$class
+new_table_pop
+```
+
+
+- Scatterplot Matrix
+
+```{r}
+ggpairs(new_table_pop[2:10], aes(colour = genre, alpha = 0.4))
+ggpairs(new_table_pop_adj[2:10], aes(colour = genre, alpha = 0.4))
+```
+- Separate 3 genres
+
+```{r}
+table_pop <- new_table_pop_adj[new_table_pop$genre == "pop",]
+table_dance <- new_table_pop_adj[new_table_pop$genre == "dance",]
+table_others <- new_table_pop_adj[new_table_pop$genre == "others",]
+```
+
+- Focus
+
+```{r}
+ggplot(new_table_pop_adj, aes(x = streams, fill = genre)) +
+  geom_density(alpha = 0.6) +
+  labs(x = "streams(log)")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = danceability, fill = genre)) +
+  geom_density(alpha = 0.6) +
+  labs(x = "streams(log)")
+```
+
+- Performing Regression
+
+```{r}
+ggplot(new_table_pop_adj, aes(x = danceability, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = energy, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = acousticness, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = instrumentalness, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = liveness, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = valence, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+```{r}
+ggplot(new_table_pop_adj, aes(x = tempo, y = streams, colour = genre)) + 
+  geom_point() +
+  stat_smooth(data = table_dance, method = lm, formula = y~x, colour = "red") +
+  stat_smooth(data = table_pop, method = lm, formula = y~x, col = "blue") +
+  stat_smooth(data = table_others, method = lm, formula = y~x, col = "green")
+```
+
+3 | Trend
+
+- A More Detailed Classification
+
+```{r}
+det_table_genre <- table_genre[c(20001:21000, 81001:82000, 51001:52000, 87001:88000, 30001:31000, 15001:16000),]
+for (i in 5001:6000) {
+  det_table_genre$track_genre[i] <- "others"
+}
+detailed_lda_genre <- lda(track_genre~danceability + energy + acousticness + instrumentalness + liveness + valence + tempo, prior = c(rep(1, 6)) / 6, data = det_table_genre)
+detailed_lda_genre
+```
+-
+
+```{r}
+new_table_yearly <- data.frame(name = table_yearly$track_name,
+                               year = table_yearly$year,
+                               genre = rep("", 2300),
+                               danceability = table_yearly$danceability,
+                               energy = table_yearly$energy,
+                               acousticness = table_yearly$acousticness,
+                               instrumentalness = table_yearly$instrumentalness,
+                               liveness = table_yearly$liveness,
+                               valence = table_yearly$valence,
+                               tempo = table_yearly$tempo)
+#remove missing data
+new_table_yearly <- new_table_yearly[-448,]
+#genre prediction
+new_table_yearly$genre <- predict(detailed_lda_genre, new_table_yearly[4:10])$class
+new_table_yearly
+```
+```{r}
+genre_yearly <- data.frame("year" = 2000:2022,
+                           "pop" = rep(0, 23),
+                           "dance" = rep(0, 23),
+                           "hip-hop" = rep(0, 23),
+                           "r-n-b" = rep(0, 23),
+                           "edm" = rep(0, 23),
+                           "others" = rep(0, 23))
+genre_attr <- c("pop", "dance", "hip-hop", "r-n-b", "edm", "others")
+for (i in 1:length(new_table_yearly$name)) {
+  temp_genre <- new_table_yearly$genre[i]
+  temp_year <- new_table_yearly$year[i]
+  index <- match(temp_genre, genre_attr) + 1
+  genre_yearly[index][temp_year - 1999,] <- genre_yearly[index][temp_year - 1999,] + 1
+}
+genre_yearly
+```
+- Visualize
+
+```{r}
+#rearrange data structure
+re_genre_yearly <- data.frame("year" = rep(0, 138),
+                              "genre" = rep("", 138),
+                              "count" = rep(0, 138))
+n = 1
+for (i in 1:length(genre_yearly$year)) {
+  for (j in 1:length(genre_attr)) {
+    re_genre_yearly$year[n] <- i + 1999
+    re_genre_yearly$genre[n] <- genre_attr[j]
+    re_genre_yearly$count[n] <- genre_yearly[j + 1][i,]
+    n = n + 1
+  }
+}
+re_genre_yearly
+#visualize
+ggplot(re_genre_yearly, aes(x = year, y = count, group = genre)) +
+  geom_line(aes(col = genre), size = 1) +
+  geom_point(aes(col = genre), size = 2)
+```
+With the 2023 songs added -
+
+```{r}
+genre_2023 <- predict(detailed_lda_genre, new_table_pop_adj[4:10])$class
+table_genre_2023 <- data.frame("year" = rep(2023, 6),
+                               "genre" = genre_attr,
+                               "count" = rep(0, 6))
+for (i in 1:length(genre_2023)) {
+  index <- match(genre_2023[i], genre_attr)
+  table_genre_2023$count[index] = table_genre_2023$count[index] + 1
+}
+table_genre_2023
+```
+- Visualize
+
+```{r}
+#adjust the song count to 100
+table_genre_2023$count <- table_genre_2023$count * 100 / 953
+#visualize
+ggplot(rbind(re_genre_yearly, table_genre_2023), aes(x = year, y = count, group = genre)) +
+  geom_line(aes(col = genre), size = 1) +
+  geom_point(aes(col = genre), size = 2)
+```
