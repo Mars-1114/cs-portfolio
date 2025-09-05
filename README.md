@@ -28,6 +28,6 @@ The projects I made in the past 3 years while studying in CS undergraduate. The 
 
 ## Personal Projects
 - Gaming Group Achievement Lists  
-**These are websites that display the achievements of the group members in game. The repositories are listed below.**
-    - [Demonlist](https://github.com/Mars-1114/GDTWDemonlist)
-    - [Challenge List](https://github.com/Mars-1114/GDTWChallengeList)
+**These are websites that display the achievements of the group members in game. The repositories and websites are listed below.**
+    - [Demonlist](https://github.com/Mars-1114/GDTWDemonlist) ([Website](https://mars-1114.github.io/GDTWDemonlist))
+    - [Challenge List](https://github.com/Mars-1114/GDTWChallengeList) ([Website](https://mars-1114.github.io/GDTWChallengeList))
