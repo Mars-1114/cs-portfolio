@@ -22,7 +22,8 @@ In the end, we made 2 games with 2 difficulties, with result display system.
 - Game design procedure
 
 ## Improvements
-- T
+- Adding more features such as pausing, volume adjustment, more elements can enhance the player experience.
+- A multiplayer mode that makes several players compete with each other can be considered.
 
 ## Contributions
 | Member    | Game Design | Level Design | Report |
