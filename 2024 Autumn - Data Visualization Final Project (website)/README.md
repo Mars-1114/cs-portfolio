@@ -8,16 +8,24 @@ We were tasked to make a webpage that visualizes the dataset we used, with inter
 
 ## Goal
 - Observe the spread and time period of the disease
-- 
+- See the composition of the cases in age groups, sexes, and serotypes.
 
 ## Result
+- We mainly used three types of graph to visualize the dataset, namely **horizon chart** (number of cases), **streamgraph** (number of each categories), and **dot map** (distribution of cases).
+- The outbreak happens periodically every year, starts from September and ends from December.
+- The diseases mostly occur in urban areas like Kaohsiung, Tainan, and Taipei  
+<br>
 
+![dengue-website](../img/vis-website.png)
+***Website Screenshot***
 
 ## What I Learned
-- H
+- Ways of visualize a large set of data, like **horizon chart** and **streamgraph** that are used in this project.
+- How to include interaction to enhance the chart.
+- The use of **D3 library** in JavaScript.
 
 ## Improvements
-- A
+- The graph could be better if it shows the movements of the diagnosed people, which is including in the dataset we used. This way, we can better understand how the disease is spread across the region.
 
 ## Contributions
 | Member    | Website | Report |
