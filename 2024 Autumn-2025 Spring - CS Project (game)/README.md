@@ -8,27 +8,39 @@ In this 1-year project, I made a **rhythm game** that is played with a **hand tr
 3. Two assist tools are integrated into the editor, including **tempo estimation** and **main melody detection**.
 
 >**Files**  
-[**Work Logs**]()  
-[**Reports**]()  
+[**Work Logs**](./work%20log/)  
+[**Editor Guide**](./editor/Chart%20Editor%20Guide.pdf)  
+[**Reports**](./report/)  
 <br>
-[**Game Source Code**]()  
-[**Editor Source Code**]()  
-[**Assist Tools Source Code**]()  
+[**Game Source Code**](./game/Assets/)  
+[**Editor Source Code**](./editor/Charting/)  
+[**Assist Tools Source Code**](./assist%20tools/BPM%20&%20Melody%20Detection/)  
 <br>
-[**Game Showcase**]()  
-[**Editor Showcase**]()
+[**Game Showcase**](https://youtu.be/-yDy5Ne4b7w)  
+[**Editor Showcase**](https://www.youtube.com/watch?v=e957_KoDARU)
 
 ## Goal
-- 
+- Make a functional and complete game.
+- Design a GUI editor to create levels in ease.
+- Research and implement ways of BPM and melody detection methods.
 
 ## Results
-- 
+Here will mainly discuss the results of assist tools implementation.
+- Using "percussioness" as the preprocess method generally outperforms than others (energy, weighted energy) in tempo detection. 
+- The code can estimate the BPM accurately most of the time when detecting EDMs, but for non electronic musics it shows a worse accuracy.
+- Melody detection underperforms with many false positives occuring when testing it with complex musics.
 
-## Screenshot
+## Screenshots
 
 
 ## What I Learned
-- 
+- Game design process
+- Basic human-computer interaction implementation (LeapMotion)
+- Music signal processing
+- Software development (Avalonia)
+- Usage of many programs (Unity, Blender, MatLab, etc.)
 
 ## Improvements
-- 
+- The game can be extended to VR to enhance the playing experience.
+- Find a way to replace the hand tracker to reduce the playing cost.
+- Use machine learning models to improve the program's ability to detect main melody.
