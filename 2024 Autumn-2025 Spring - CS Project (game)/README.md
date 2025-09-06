@@ -11,11 +11,11 @@ In this 1-year project, I made a **rhythm game** that is played with a **hand tr
 [**Work Logs**](./work%20log/)  
 [**Editor Guide**](./editor/Chart%20Editor%20Guide.pdf)  
 [**Reports**](./report/)  
-<br>
+==================================  
 [**Game Source Code**](./game/Assets/)  
 [**Editor Source Code**](./editor/Charting/)  
 [**Assist Tools Source Code**](./assist%20tools/BPM%20&%20Melody%20Detection/)  
-<br>
+==================================  
 [**Game Showcase**](https://youtu.be/-yDy5Ne4b7w)  
 [**Editor Showcase**](https://www.youtube.com/watch?v=e957_KoDARU)
 
