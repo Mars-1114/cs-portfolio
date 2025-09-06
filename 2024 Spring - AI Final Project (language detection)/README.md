@@ -8,7 +8,7 @@ This project aims to use machine learning models to predict the language a given
 
 >**Files**  
 [**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Spring%20-%20AI%20Final%20Project%20(language%20detection)/Team37_Slides.pdf)  
-[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Spring%20-%20AI%20Final%20Project%20(language%20detection)/project)
+[**Code**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Spring%20-%20AI%20Final%20Project%20(language%20detection)/project)
 
 ## Goal
 - Train multiple classification models to identify the language from plain texts.

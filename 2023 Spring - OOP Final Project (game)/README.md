@@ -7,7 +7,7 @@ This is a great opportunity for me to practice OOP and the first time of me maki
 
 >**Files**  
 [**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2023%20Spring%20-%20OOP%20Final%20Project%20(game)/report_111550037.pdf)  
-[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2023%20Spring%20-%20OOP%20Final%20Project%20(game)/Dungeon_111550037)  
+[**Code**](https://github.com/Mars-1114/cs-portfolio/tree/main/2023%20Spring%20-%20OOP%20Final%20Project%20(game)/Dungeon_111550037)  
 [**Gameplay Showcase**](https://www.youtube.com/watch?v=Mh8DPcvFXnQ)
 
 ## Game

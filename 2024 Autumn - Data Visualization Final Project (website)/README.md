@@ -9,7 +9,7 @@ We were tasked to make a webpage that visualizes the dataset we used, with inter
 >**Files**  
 [**Proposal**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/Final%20Project%20Proposal_Group%2032.pdf)  
 [**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/report.pdf)  
-[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/Dengue%20Map)
+[**Code**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/Dengue%20Map)
 
 ## Goal
 - Observe the spread and time period of the disease

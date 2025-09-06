@@ -10,7 +10,7 @@ We had to do 10 homeworks and a final project in this course, which mostly used 
 
 >**Files**  
 [**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2023%20Autumn%20-%20Data%20Science%20Labs/111550037_嚴偉哲_final.pdf)  
-[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2023%20Autumn%20-%20Data%20Science%20Labs/Homeworks)
+[**Code**](https://github.com/Mars-1114/cs-portfolio/tree/main/2023%20Autumn%20-%20Data%20Science%20Labs/Homeworks)
 
 ## Goal
 - Classify music genres using ***linear discriminant analysis***

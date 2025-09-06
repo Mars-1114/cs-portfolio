@@ -9,7 +9,7 @@ This website offers features like searching athletes, inserting/deleting records
 
 >**Files**  
 [**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Autumn%20-%20Database%20Final%20Project%20(website)/Project_Team22.pdf)  
-[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Autumn%20-%20Database%20Final%20Project%20(website)/code)  
+[**Code**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Autumn%20-%20Database%20Final%20Project%20(website)/code)  
 [**Showcase**](https://www.youtube.com/watch?v=0wX515MbXHY)
 
 ## Goal
