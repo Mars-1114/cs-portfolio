@@ -31,7 +31,20 @@ Here will mainly discuss the results of assist tools implementation.
 - Melody detection underperforms with many false positives occuring when testing it with complex musics.
 
 ## Screenshots
+![cspj-game](../img/cspj-game.png)  
+***Gameplay***  
+<br>
 
+![cspj-editor](../img/cspj-editor.png)  
+***Editor***
+<br>
+
+![cspj-bpm](../img/cspj-bpm.png)  
+***Tempo Estimation Result***
+<br>
+
+![cspj-melody](../img/cspj-melody.png)  
+***Melody Block Clustering in Main Melody Detecton*** (left: sequential, right: correlation)
 
 ## What I Learned
 - Game design process
@@ -41,6 +54,7 @@ Here will mainly discuss the results of assist tools implementation.
 - Usage of many programs (Unity, Blender, MatLab, etc.)
 
 ## Improvements
+- Using Evaluation metrics to the detection method can make the result more convincing.
 - The game can be extended to VR to enhance the playing experience.
 - Find a way to replace the hand tracker to reduce the playing cost.
 - Use machine learning models to improve the program's ability to detect main melody.
