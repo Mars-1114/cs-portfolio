@@ -4,7 +4,13 @@
 The final project needed to used LabVIEW to design a game. We chose to make rhythm game that is similar to *Muse Dash*. This includes making gameplay design, level file formats, visuals, autoplay, etc..  
 In the end, we made 2 games with 2 difficulties, with result display system.
 
+>**Files**  
+[**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2023%20Autumn%20-%20LabVIEW%20(game)/LabVIEW期末專案%20-%20簡易音樂遊戲.pdf)  
+[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2023%20Autumn%20-%20LabVIEW%20(game)/Rhythm%20Game)  
+[**Gameplay Showcase**](https://www.youtube.com/watch?v=YGYGrdy6cf8)
+
 ## Game
+
 ![game-menu](../img/labview-game-menu.png)  
 **The game menu**
 

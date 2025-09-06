@@ -6,6 +6,11 @@ We were tasked to make a webpage that visualizes the dataset we used, with inter
 >**Dataset:**  
 [Taiwan Dengue Cases 1998-2024](https://www.kaggle.com/datasets/taweilo/taiwan-dengue-daily-confirmed-cases-1998-2024)  
 
+>**Files**  
+[**Proposal**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/Final%20Project%20Proposal_Group%2032.pdf)  
+[**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/report.pdf)  
+[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Autumn%20-%20Data%20Visualization%20Final%20Project%20(website)/Dengue%20Map)
+
 ## Goal
 - Observe the spread and time period of the disease
 - See the composition of the cases in age groups, sexes, and serotypes.

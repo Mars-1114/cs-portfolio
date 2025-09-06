@@ -7,13 +7,16 @@ This website offers features like searching athletes, inserting/deleting records
 >**Dataset:**  
 [126 Years of Historical Olympic](https://www.kaggle.com/datasets/muhammadehsan02/126-years-of-historical-olympic-dataset)  
 
+>**Files**  
+[**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2024%20Autumn%20-%20Database%20Final%20Project%20(website)/Project_Team22.pdf)  
+[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2024%20Autumn%20-%20Database%20Final%20Project%20(website)/code)  
+[**Showcase**](https://www.youtube.com/watch?v=0wX515MbXHY)
+
 ## Goal
 - Build a website with a database
 - Implement **CRUD** functionalities
 
 ## Screenshots
-[**Showcase**](https://www.youtube.com/watch?v=0wX515MbXHY)
-
 ![db-menu](../img/db-menu.png)
 ***Main Menu***
 
@@ -40,10 +43,10 @@ This website offers features like searching athletes, inserting/deleting records
 - Implement SQL injection to prevent malicious attack on the database.
 
 ## Contributions
-| Member    | HTML   | PHP    | SQL    | Report |
-| ------    | ------ | ------ | ------ | ------ |
-| **嚴偉哲** | 70%    | 60%    | 0%     | 5%     |
-| **劉真宏** | 0%     | 0%     | 10%    | 50%    |
-| **林啟堯** | 30%    | 40%    | 0%     | 15%    |
-| **彭叡楀** | 0%     | 0%     | 45%    | 15%    |
-| **駱巍文** | 0%     | 0%     | 45%    | 15%    |
+| Member    | Frontend | Backend | SQL    | Report |
+| ------    | ------   | ------  | ------ | ------ |
+| **嚴偉哲** | 70%      | 60%     | 0%     | 5%     |
+| **劉真宏** | 0%       | 0%      | 10%    | 50%    |
+| **林啟堯** | 30%      | 40%     | 0%     | 15%    |
+| **彭叡楀** | 0%       | 0%      | 45%    | 15%    |
+| **駱巍文** | 0%       | 0%      | 45%    | 15%    |

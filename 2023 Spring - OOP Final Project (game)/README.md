@@ -5,7 +5,13 @@ We needed to make a cmd-based RPG game with OOP usage requirement such as inheri
 
 This is a great opportunity for me to practice OOP and the first time of me making a medium-sized project. I put a lot of efforts and time to implement my ideas and I think I learned a lot about game design and OOP and I'm pretty satisfied with the outcome.
 
+>**Files**  
+[**Report**](https://github.com/Mars-1114/cs-portfolio/blob/main/2023%20Spring%20-%20OOP%20Final%20Project%20(game)/report_111550037.pdf)  
+[**Codes**](https://github.com/Mars-1114/cs-portfolio/tree/main/2023%20Spring%20-%20OOP%20Final%20Project%20(game)/Dungeon_111550037)  
+[**Gameplay Showcase**](https://www.youtube.com/watch?v=Mh8DPcvFXnQ)
+
 ## Game
+
 ![game-layout](../img/oop-game-layout.png)  
 **Dungeon Layout**
 
