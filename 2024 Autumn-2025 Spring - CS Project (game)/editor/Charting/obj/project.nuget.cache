@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "62gCbz264MA=",
+  "dgSpecHash": "rlKbUDgnkQw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\Charting\\Charting.csproj",
+  "projectFilePath": "C:\\Users\\user\\Documents\\GitHub\\cs-portfolio\\2024 Autumn-2025 Spring - CS Project (game)\\editor\\Charting\\Charting.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\avalonia\\11.2.1\\avalonia.11.2.1.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.22045.20230930\\avalonia.angle.windows.natives.2.1.22045.20230930.nupkg.sha512",
@@ -89,9 +89,9 @@
     "C:\\Users\\user\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\tmds.dbus.protocol\\0.20.0\\tmds.dbus.protocol.0.20.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\videolan.libvlc.windows\\3.0.21\\videolan.libvlc.windows.3.0.21.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\9.0.3\\microsoft.aspnetcore.app.runtime.win-x64.9.0.3.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.3\\microsoft.netcore.app.runtime.win-x64.9.0.3.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\9.0.3\\microsoft.windowsdesktop.app.runtime.win-x64.9.0.3.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.3\\microsoft.netcore.app.runtime.win-x64.9.0.3.nupkg.sha512"
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\9.0.3\\microsoft.aspnetcore.app.runtime.win-x64.9.0.3.nupkg.sha512"
   ],
   "logs": []
 }
