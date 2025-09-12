@@ -1,7 +1,7 @@
 # LabVIEW Final Project
 *Team Project (2 people)*
 ## Intro
-The final project needed to used LabVIEW to design a game. We chose to make rhythm game that is similar to *Muse Dash*. This includes making gameplay design, level file formats, visuals, autoplay, etc..  
+The final project needed to used LabVIEW to design a game. We chose to make rhythm game that is similar to [*Muse Dash*](https://en.wikipedia.org/wiki/Muse_Dash). This includes making gameplay design, level file formats, visuals, autoplay, etc..  
 In the end, we made 2 games with 2 difficulties, with result display system.
 
 >**Files**  
