@@ -30,6 +30,10 @@ Here will mainly discuss the results of assist tools implementation.
 - The code can estimate the BPM accurately most of the time when detecting EDMs, but for non electronic musics it shows a worse accuracy.
 - Melody detection underperforms with many false positives occuring when testing it with complex musics.
 
+## Features
+- Using autocorrelation to improve the previous method (onset chain) in tempo detection, and apply it to time signature detection.
+- Using correlation matrix and hierarchical clustering to group melodies with high similarity
+
 ## Screenshots
 ![cspj-game](../img/cspj-game.png)  
 ***Gameplay***  

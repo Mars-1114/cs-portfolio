@@ -23,6 +23,10 @@ In the end, we made 2 games with 2 difficulties, with result display system.
 ![game-result](../img/labview-game-result.png)  
 **The result screen**
 
+## Features
+- Designed a custom file format to store the level data
+- Using **masking** and **easing function** to achieve a better-looking interface
+
 ## What I Learned
 - How to use **LabVIEW**
 - Game design procedure

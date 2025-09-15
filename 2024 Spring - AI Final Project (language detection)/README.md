@@ -20,12 +20,16 @@ This project aims to use machine learning models to predict the language a given
 - For shorter text length (such as a single word), our model underperforms (acc = 0.3~0.4), but **voting** helps increase the accuracy (acc = 0.42)
 - **1-gram / 2-gram frequency analysis** are the most significant features in language detection.
 
+## Features
+- Feature extraction using frequency analysis and information density.
+- Parallel processing to speed up computation time.
+
 ## What I Learned
 - Feature extraction on how to differentiate languages.
 - Machine learning model training process.
 
 ## Improvements
-- Training the model was time-consuming, a code optimization or parallel programming may reduce this problem.
+- Feature extraction was time-consuming, a code optimization may reduce this problem.
 - Multi-layer classification (language family -> sublanguage) may improve the performance.
 
 ## Contributions
