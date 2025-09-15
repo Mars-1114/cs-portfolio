@@ -34,5 +34,5 @@ In the end, we made 2 games with 2 difficulties, with result display system.
 ## Contributions
 | Member    | Game Design | Level Design | Report |
 | ------    | ----------- | ------------ | ------ |
-| **嚴偉哲** | 100%        | 70%          | 90%    |  
-| **黃琮仁** | 0%          | 30%          | 10%    |
+| **嚴偉哲** | 100%        | 70%          | 95%    |  
+| **黃琮仁** | 0%          | 30%          | 5%     |
