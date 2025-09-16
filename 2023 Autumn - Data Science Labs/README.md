@@ -22,7 +22,7 @@ We had to do 10 homeworks and a final project in this course, which mostly used 
 - Hip-hop has become trendy and EDM left the mainstream since 2017.
 
 ## What I Learned
-- The use of **R Language** and **R Markdown**
+- The use of **R Language** and the **ggplot2** library
 - **Data Science** and **Machine Learning** basics
 - The process of training model (clean up dirty data, train-test split, etc.)
 
